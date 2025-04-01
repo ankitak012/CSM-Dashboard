@@ -1,0 +1,13 @@
+
+
+<h2 class="title">Welcome to the Dashboard</h2>
+<div class="grid-container">
+  <div class="card" *ngFor="let server of servers">
+    <p><strong>Server ID:</strong> {{ server.server_id  }}</p>
+    <p><strong>Server Name:</strong> {{ server.server_name }}</p>
+    <p><strong>Uptime:</strong> {{ server.created_on |date:"dd:MM:yy"  }}</p>
+    <button class="click-btn" (click)="openService(server)">click</button>
+  </div>
+</div>
+
+

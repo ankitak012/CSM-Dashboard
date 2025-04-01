@@ -1,0 +1,25 @@
+{% comment %} 
+<div class="dashboard-container">
+  <div *ngFor="let service of services; let i = index" 
+       class="dashboard-card" 
+       [ngClass]="{'show': displayedIndexes.includes(i)}">
+    
+    <p><strong>Server ID:</strong> {{ service.server }}</p>
+    <p><strong>Server Name:</strong> {{ service.server_name }}</p>
+    <p><strong>Uptime:</strong> {{ service.created_on |date:"dd:MM:yy"}}</p>
+
+
+    
+    <button (click)="openChart(service)" class="red-button">click</button>
+  </div>
+</div>
+
+<!-- Modal for displaying chart -->
+<div *ngIf="showChart" class="modal">
+  <div class="modal-content">
+    <h2>Service Status: {{ selectedService?.server_name || selectedService?.server?.server_name || 'No Server' }}</h2>
+    
+    <app-barchart></app-barchart>
+    <button (click)="closeChart()" class="close-button">close</button>
+  </div>
+</div> {% endcomment %}
