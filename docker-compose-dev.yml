@@ -29,7 +29,7 @@ services:
     command: bash -c ./start.sh
 
   frontend:
-    build: ./front/dashboard  # Path to Angular frontend
+    build: ./front # Path to Angular frontend
     container_name: angular_frontend_dashboard
     restart: always
     depends_on:
@@ -37,7 +37,7 @@ services:
     ports:
       - "${FRONTEND_PORT}:4200"
     volumes:
-      - ./front/dashboard:/app
+      - ./front:/app
     command: sleep infinity
 
 volumes:

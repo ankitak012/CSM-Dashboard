@@ -1,0 +1,16 @@
+<div class="form-overlay" *ngIf="isVisible">
+  <div class="server-form">
+    <h2>Add Server</h2>
+    <label>Server Name:</label>
+    <input type="text" [(ngModel)]="serverName">
+
+    <label>Server IP:</label>
+    <input type="text" [(ngModel)]="serverIp">
+
+    <label>Server Location:</label>
+    <input type="text" [(ngModel)]="serverLocation">
+
+    <button (click)="saveServer()">Save</button>
+    <button class="close-btn" (click)="closeForm()">Cancel</button>
+  </div>
+</div>
