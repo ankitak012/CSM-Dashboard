@@ -1,5 +1,5 @@
-<app-header (addServerClicked)="isFormOpen = true"></app-header>
-
+<app-sidebar></app-sidebar>
+<main>
 <div class="main-content">
   <router-outlet></router-outlet>
 </div>
@@ -7,3 +7,4 @@
 <app-server-form [isVisible]="isFormOpen" (close)="isFormOpen = false"></app-server-form>
 
 <app-footer></app-footer>
+</main>

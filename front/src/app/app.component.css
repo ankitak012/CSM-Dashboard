@@ -17,3 +17,12 @@ body, html {
     padding-bottom: 50px; /* Adjust according to footer height */
   }
   
+
+  main {
+    margin-left: 250px; /* Match sidebar width */
+    padding-top: 50px; /* Adjust for header */
+  }
+  
+  
+  
+  

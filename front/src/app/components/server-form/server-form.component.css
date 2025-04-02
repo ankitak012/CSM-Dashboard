@@ -115,8 +115,31 @@
   
     .server-form button:nth-child(1),
     .server-form button:nth-child(2) {
-      width: 48%;
-      margin-right: 4%;
-    }
+    width: 48%;
+    margin-right: 4%;
+  }
+}
+
+.email-input-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid #ccc;
+    padding: 5px;
+    gap: 5px;
+    align-items: center;
+  }
+  
+  .email-tag {
+    background-color: #e0f0ff;
+    padding: 5px 10px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .email-tag .remove {
+    margin-left: 8px;
+    cursor: pointer;
+    color: red;
   }
   

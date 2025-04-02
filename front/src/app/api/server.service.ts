@@ -10,11 +10,10 @@ export class ServerService {
   constructor(private http: HttpClient) {}
 
   getAllServer(): Observable<any[]> {
-    
     return this.http.get<any[]>(this.apiUrl);
   }
 
-
-
-
+  addServer(server: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, server);
+  }
 }
