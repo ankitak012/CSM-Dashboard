@@ -4,7 +4,7 @@ aside {
     background-color: #163B5A; /* Dark blue color */
     position: fixed;
     left: 0;
-    top: 0;
+    top: 30px;
     padding-top: 50px; /* Space for the header */
   }
   

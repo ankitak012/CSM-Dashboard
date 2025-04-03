@@ -6,14 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ServerService {
-  private apiUrl = 'http://127.0.0.1:9000/api/server/'; // Replace with your actual API URL
+  private apiUrl = 'http://127.0.0.1:9000/api/server/';
+  //  // Replace with your actual API URL
   constructor(private http: HttpClient) {}
 
-  getAllServer(): Observable<any[]> {
+  getServers(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);
-  }
-
-  addServer(server: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, server);
   }
 }

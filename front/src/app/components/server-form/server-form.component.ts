@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms'; // Import FormsModule
 import { CommonModule } from '@angular/common'; // Import CommonModule
-import { ServerService } from '../../api/server.service';
+import { ServerFromService } from '../../api/server-from.service';
 
 
 @Component({
@@ -13,14 +13,14 @@ import { ServerService } from '../../api/server.service';
 })
 
 export class ServerFormComponent {
-  @Output() close = new EventEmitter<void>();
   @Input() isVisible: boolean = false;
+  @Output() close = new EventEmitter<void>();
 
   serverForm: FormGroup;
   emailInput: string = ''; 
 
   
-  constructor(private fb: FormBuilder, private apiService: ServerService) {
+  constructor(private fb: FormBuilder, private apiService: ServerFromService) {
     this.serverForm = this.fb.group({
       server_name: ['', Validators.required],
       server_secret_name: ['', Validators.required],
@@ -29,9 +29,9 @@ export class ServerFormComponent {
     });
   }
 
-  get emails(): FormArray {
-    return this.serverForm.get('emails') as FormArray;
-  }
+  // get emails(): FormArray {
+  //   return this.serverForm.get('emails') as FormArray;
+  // }
 
   addEmail() {
     const trimmed = this.emailInput.trim();
@@ -78,7 +78,7 @@ export class ServerFormComponent {
           console.log('Server created:', response);
           alert('Server added successfully!');
           this.serverForm.reset();
-          this.getEmails().clear(); // Clear emails after submission
+          this.getEmails().reset(); // Clear emails after submission
         },
         error: (error: any) => {
           console.error('Error creating server:', error);

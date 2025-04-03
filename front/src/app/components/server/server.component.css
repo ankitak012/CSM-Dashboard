@@ -1,35 +1,46 @@
-.title {
-    text-align: center;
-    color: blue;
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive columns */
-    gap: 20px;
-    padding: 20px;
-  }
-  
-  .card {
-    border: 1px solid black;
-    border-radius: 8px;
-    padding: 15px;
-    text-align: center;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .click-btn {
-    background-color: red;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  
-  .click-btn:hover {
-    background-color: darkred;
-  }
-  
+.server-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.server-card {
+  background: #f8f8f8d0;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.server-card h3 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #555;
+  margin: 0;
+}
+
+.server-card p {
+  font-size: 14px;
+  color: #888;
+  text-align: right;
+  margin: 0;
+}
+
+.server-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Adjust column size */
+  gap: 25px; /* Space between cards */
+  padding: 25px; /* Adjust padding as needed */
+  margin-left: 100px; /* Ensure space for sidebar */
+  margin-right: 100px; /* Ensure space for sidebar */
+  margin-top: 50px; /* Ensure space for header */
+}
+
+
+.server-chart {
+  height: 80px;
+  background: #f5c6a5;
+  border-radius: 5px;
+  margin-top: 10px;
+}

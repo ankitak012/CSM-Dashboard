@@ -10,20 +10,11 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule,RouterModule,HeaderComponent,FooterComponent,ServerFormComponent,SidebarComponent],
-  template: `
-    <app-sidebar></app-sidebar>
-    <main>
-    <app-header (addServerClicked)="isFormOpen = true"></app-header>
-
-    
-
-    <app-server-form [isVisible]="isFormOpen" (close)="isFormOpen = false"></app-server-form>
-
-    <app-footer></app-footer>
-    </main>
-  `,
+  imports: [CommonModule,HeaderComponent,FooterComponent,ServerFormComponent,SidebarComponent,ServerComponent],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'  
 })
+
 export class AppComponent {
   isFormOpen: boolean = false;
 

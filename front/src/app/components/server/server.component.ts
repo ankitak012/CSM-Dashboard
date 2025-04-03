@@ -1,31 +1,32 @@
 import { Component, OnInit } from '@angular/core';
 import { ServerService } from '../../api/server.service';
 import { CommonModule } from '@angular/common';
-import { ServiceComponent } from '../service/service.component';
-import { Router } from '@angular/router';
+import { RouterModule, Router } from '@angular/router'; // Ensure Router is imported
+
 
 
 @Component({
   selector: 'app-server',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './server.component.html',
   styleUrl: './server.component.css'
 })
+
 export class ServerComponent implements OnInit{
   servers: any[] = []; // Store the fetched server data
-  selectedServer: any = null; // Store the clicked server
+  
+  constructor(private serverService: ServerService) {}
 
-  constructor(private serverService: ServerService, private router: Router) {}
+
 
   ngOnInit(): void {
-    this.getServers();
-  }
-
-  getServers(): void {
-    this.serverService.getAllServer().subscribe(
+    this.serverService.getServers().subscribe(
       (data) => {
-        this.servers = data;
+        this.servers = data.map(server => ({
+          ...server,
+          uptime: this.calculateDaysSince(server.created_on)
+        }));
       },
       (error) => {
         console.error('Error fetching server data:', error);
@@ -33,11 +34,12 @@ export class ServerComponent implements OnInit{
     );
   }
 
-  openService(server: { server_name: string; server_id: string }) {
-    const url = `/service?server_name=${encodeURIComponent(server.server_name)}&server_id=${server.server_id}`;
-    window.open(url, '_blank');
-    
+  calculateDaysSince(createdOn: string): number {
+    const createdDate = new Date(createdOn);
+    const today = new Date();
+    const timeDiff = Math.abs(today.getTime() - createdDate.getTime());
+    return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
   }
-
-  
 }
+  
+
