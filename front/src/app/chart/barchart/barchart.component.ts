@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms'; // ✅ Import FormsModule
-import { CountComponent } from '../../components/count/count.component';
 
 
 @Component({

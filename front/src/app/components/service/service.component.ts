@@ -5,6 +5,7 @@ import { CommonModule,  NgFor } from '@angular/common';
 import { BarchartComponent } from '../../chart/barchart/barchart.component';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms'; // ✅ Import FormsModule
+import { ServicesService } from '../../api/services.service';
 
 
 Chart.register(...registerables);
@@ -33,229 +34,182 @@ export class ServiceComponent implements OnInit {
   selectedTimeRange: string = 'minute'; // Default selection
   
   // @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>; // ✅ Declare chartCanvas
-  constructor(private apiService: ApiService, private route: ActivatedRoute) {}
+  constructor(private servicesService: ServicesService, private route: ActivatedRoute) {}
 
   @Input() server: any; // ✅ Accept server data from ServerComponent
 
   
 
-  ngOnInit() {
-    // Fetch all services from backend
-    this.apiService.getAllServices().subscribe((data: any[]) => {
-      this.allServices = data;
+  // ngOnInit() {
 
-      //console.log(data)
-      // Read server_name and server_id from URL
-      this.route.queryParams.subscribe(params => {
-        console.log('Query Params:', params); // ✅ Debugging step
-        const serverName = params['server_name'];
-        const serverId = params['server_id'];
+  //   const serverId = Number(this.route.snapshot.paramMap.get('serverId'));
+  //   // Fetch all services from backend
+  //   this.servicesService.getAllServices().subscribe((data: any[]) => {
+  //     this.allServices = data;
 
-        console.log('Received Server:', serverName, serverId);
-        if (!serverName || !serverId) return; // ✅ Prevent errors
+  //     //console.log(data)
+  //     // Read server_name and server_id from URL
+  //     this.route.queryParams.subscribe(params => {
+  //       console.log('Query Params:', params); // ✅ Debugging step
+  //       const serverName = params['server_name'];
+  //       const serverId = params['server_id'];
 
-        // ✅ Filter services based on the selected server
-        this.filteredServices = this.allServices.filter(service => 
-          service.server_name === serverName && service.server === serverId
-        );
-        // Apply time filter after loading the data
-        this.applyTimeFilter();
-      });
-    });
-    console.log('Received Server:', this.server); // ✅ Debugging check
-  }
-  
-  
+  //       console.log('Received Server:', serverName, serverId);
+  //       if (!serverName || !serverId) return; // ✅ Prevent errors
 
-  //showCardsOneByOne() {
-  //  this.services.forEach((_, index) => {
-   //   setTimeout(() => {
-   //     this.displayedIndexes.push(index);
-    //  }, index * 500); // 500ms delay per card
-   // });
-  //}
+  //       // ✅ Filter services based on the selected server
+  //       this.filteredServices = this.allServices.filter(service => 
+  //         service.server_name === serverName && service.server === serverId
+  //       );
+  //       // Apply time filter after loading the data
+  //       this.applyTimeFilter();
+  //     });
+  //   });
 
-  processData(data: any[]) {
-    const groupedData: { [key: string]: { key: string; server_name: string; server_id: string; data: any[] } } = {}; // Define type properly
-  
-    data.forEach(item => {
-      const key = `${item.server_name}-${item.server_id}`;
-      if (!groupedData[key]) {
-        groupedData[key] = { 
-          key,
-          server_name: item.server_name, 
-          server_id: item.server_id, 
-          data: [] 
-        };
-      }
-      groupedData[key].data.push(item);
-    });
-  
-    this.serverGroups = Object.values(groupedData).map(group => ({
-      ...group,
-      data: group.data.sort((a: { time: string }, b: { time: string }) => 
-        new Date(a.time).getTime() - new Date(b.time).getTime()
-      ) // ✅ Now TypeScript understands `a` and `b` are objects with `time`
-    }));
-  
-    // Initialize visibility and filtered data storage
-    this.serverGroups.forEach(group => {
-      this.visibleCharts[group.key] = false;
-      this.filteredData[group.key] = [];
-    });
-  }
-  
-  
-
-
-  // openChart(service: any) {
-  //   this.selectedService = service;
-  //   console.log("Selected Service Data:", this.selectedService.server_name); // Debugging
-  //   this.showChart = true;
-
-  //   setTimeout(() => this.loadChart(), 200); // Ensure modal loads
+  //   console.log('Received Server:', this.server); // ✅ Debugging check
   // }
-
-  toggleChart(group: any) {
-    const key = group.key;
-    this.visibleCharts[key] = !this.visibleCharts[key];
-  
-    if (this.visibleCharts[key] && group.data.length > 0) {
-      const latestDate = group.data[group.data.length - 1].time; // Get the latest date
-      this.filteredData[key] = group.data.filter((item: any) => item.time === latestDate);
-    }
-  }
   
   
 
-  closeChart() {
-    this.showChart = false;
-    if (this.myChart) {
-      this.myChart.destroy();
-      this.myChart = null;
-    }
-  }
 
-  onTimeFilterChange(event: any) {
-    this.selectedTimeRange = event.target.value;
-    this.applyTimeFilter();
-    }
+
+  // processData(data: any[]) {
+  //   const groupedData: { [key: string]: { key: string; server_name: string; server_id: string; data: any[] } } = {}; // Define type properly
   
-  
-  applyTimeFilter() {
-    const now = new Date();
-    let startTime: Date;
-
-    switch (this.selectedTimeRange) {
-      case 'minute':
-        startTime = new Date(now.getTime() - 60 * 1000);
-        break;
-      case 'hour':
-        startTime = new Date(now.getTime() - 60 * 60 * 1000);
-        break;
-      case 'day':
-        startTime = new Date(now.setDate(now.getDate() - 1));
-        break;
-      case 'week':
-        startTime = new Date(now.setDate(now.getDate() - 7));
-        break;
-      case 'month':
-        startTime = new Date(now.setMonth(now.getMonth() - 1));
-        break;
-      case 'year':
-        startTime = new Date(now.setFullYear(now.getFullYear() - 1));
-        break;
-      default:
-        return;
-    }
-
-    // ✅ Read `server_name` and `server_id` from URL
-  this.route.queryParams.subscribe(params => {
-    const serverName = params['server_name'];
-    const serverId = params['server_id'];
-
-    console.log('Filtering for:', { serverName, serverId });
-
-    if (!serverName || !serverId) return;
-
-    // ✅ First filter services by server_name & server_id
-    this.filteredServices = this.allServices
-      .filter(service => 
-        service.server_name === serverName && 
-        service.server === serverId
-      )
-      // ✅ Then apply the time filter
-      .filter(service => {
-        if (!service.created_on) return false; // Ignore missing dates
-
-        const createdOnDate = new Date(service.created_on); // Convert to Date
-        return createdOnDate >= startTime; // Check if it's within range
-      });
-
-    console.log('Filtered Services:', this.filteredServices);
-    })
-  }
-
-  // loadChart() {
-  //   if (!this.chartCanvas || !this.chartCanvas.nativeElement) return;
-  //   const ctx = this.chartCanvas.nativeElement as HTMLCanvasElement;
-  
-  //   if (this.myChart) {
-  //     this.myChart.destroy();
-  //   }
-  
-  //   if (!this.selectedService) return;
-  
-  //   // Extract boolean values
-  //   const serviceData = { ...this.selectedService };
-  //   const excludeFields = ['id', 'created_on', 'server', 'error', 'upCount', 'downCount'];
-  //   const labels: string[] = [];
-  //   const data: number[] = [];
-  //   const backgroundColors: string[] = [];
-  
-  //   for (const key in serviceData) {
-  //     if (!excludeFields.includes(key) && typeof serviceData[key] === 'boolean') {
-  //       labels.push(key);
-  //       data.push(serviceData[key] ? 1 : 0);
-  //       backgroundColors.push(serviceData[key] ? 'green' : 'red');
+  //   data.forEach(item => {
+  //     const key = `${item.server_name}-${item.server_id}`;
+  //     if (!groupedData[key]) {
+  //       groupedData[key] = { 
+  //         key,
+  //         server_name: item.server_name, 
+  //         server_id: item.server_id, 
+  //         data: [] 
+  //       };
   //     }
-  //   }
+  //     groupedData[key].data.push(item);
+  //   });
   
-  //   this.myChart = new Chart(ctx, {
-  //     type: 'bar',  
-  //     data: {
-  //       labels: labels,
-  //       datasets: [{
-  //         label: `Service Status - ${this.selectedService?.server?.server_name || 'No Server'}`,
-  //         data: data,
-  //         backgroundColor: backgroundColors,
-  //         borderColor: 'black',
-  //         borderWidth: 1,
-  //         barThickness: 30 // Adjust bar thickness
-  //       }]
-  //     },
-  //     options: {
-  //       indexAxis: 'y',  // This makes it horizontal
-  //       responsive: true,
-  //       maintainAspectRatio: false,
-  //       plugins: {
-  //         legend: { display: false } // Hide legend
-  //       },
-  //       scales: {
-  //         x: {
-  //           beginAtZero: true,
-  //           ticks: { stepSize: 1 }
-  //         },
-  //         y: {
-  //           ticks: { font: { size: 14 } } // Bigger labels
-  //         }
-  //       }
-  //     }
+  //   this.serverGroups = Object.values(groupedData).map(group => ({
+  //     ...group,
+  //     data: group.data.sort((a: { time: string }, b: { time: string }) => 
+  //       new Date(a.time).getTime() - new Date(b.time).getTime()
+  //     ) // ✅ Now TypeScript understands `a` and `b` are objects with `time`
+  //   }));
+  
+  //   // Initialize visibility and filtered data storage
+  //   this.serverGroups.forEach(group => {
+  //     this.visibleCharts[group.key] = false;
+  //     this.filteredData[group.key] = [];
   //   });
   // }
   
+  
+
+
+  
+
+  // toggleChart(group: any) {
+  //   const key = group.key;
+  //   this.visibleCharts[key] = !this.visibleCharts[key];
+  
+  //   if (this.visibleCharts[key] && group.data.length > 0) {
+  //     const latestDate = group.data[group.data.length - 1].time; // Get the latest date
+  //     this.filteredData[key] = group.data.filter((item: any) => item.time === latestDate);
+  //   }
+  // }
+  
+  
+
+  // closeChart() {
+  //   this.showChart = false;
+  //   if (this.myChart) {
+  //     this.myChart.destroy();
+  //     this.myChart = null;
+  //   }
+  // }
+
+  // onTimeFilterChange(event: any) {
+  //   this.selectedTimeRange = event.target.value;
+  //   this.applyTimeFilter();
+  //   }
+  
+  
+  // applyTimeFilter() {
+  //   const now = new Date();
+  //   let startTime: Date;
+
+  //   switch (this.selectedTimeRange) {
+  //     case 'minute':
+  //       startTime = new Date(now.getTime() - 60 * 1000);
+  //       break;
+  //     case 'hour':
+  //       startTime = new Date(now.getTime() - 60 * 60 * 1000);
+  //       break;
+  //     case 'day':
+  //       startTime = new Date(now.setDate(now.getDate() - 1));
+  //       break;
+  //     case 'week':
+  //       startTime = new Date(now.setDate(now.getDate() - 7));
+  //       break;
+  //     case 'month':
+  //       startTime = new Date(now.setMonth(now.getMonth() - 1));
+  //       break;
+  //     case 'year':
+  //       startTime = new Date(now.setFullYear(now.getFullYear() - 1));
+  //       break;
+  //     default:
+  //       return;
+  //   }
+
+  //   // ✅ Read `server_name` and `server_id` from URL
+  // this.route.queryParams.subscribe(params => {
+  //   const serverName = params['server_name'];
+  //   const serverId = params['server_id'];
+
+  //   console.log('Filtering for:', { serverName, serverId });
+
+  //   if (!serverName || !serverId) return;
+
+  //   // ✅ First filter services by server_name & server_id
+  //   this.filteredServices = this.allServices
+  //     .filter(service => 
+  //       service.server_name === serverName && 
+  //       service.server === serverId
+  //     )
+  //     // ✅ Then apply the time filter
+  //     .filter(service => {
+  //       if (!service.created_on) return false; // Ignore missing dates
+
+  //       const createdOnDate = new Date(service.created_on); // Convert to Date
+  //       return createdOnDate >= startTime; // Check if it's within range
+  //     });
+
+  //   console.log('Filtered Services:', this.filteredServices);
+  //   })
+  // }
+
+  ngOnInit(): void {
+    const serverId = Number(this.route.snapshot.paramMap.get('serverId'));
+    console.log(serverId)
+    this.loadServices(serverId);
+  }
+
+  loadServices(serverId: number): void {
+    console.log('Loading services for server ID:', serverId);
+    this.servicesService.getServicesByServerId(serverId).subscribe({
+      next: (data: any[]) => {
+        console.log('Services data received:', data);
+        this.services = data;
+      },
+      error: (error) => {
+        console.error('Error loading services:', error);
+        console.error('Error details:', {
+          status: error.status,
+          message: error.message,
+          url: error.url
+        });
+      }
+    });
+  }
 
 }
-
-
-

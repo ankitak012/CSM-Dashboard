@@ -2,7 +2,7 @@
     <main>
     <app-header (addServerClicked)="isFormOpen = true"></app-header>
 
-    <app-server></app-server>
+    <router-outlet></router-outlet>
 
     <app-server-form [isVisible]="isFormOpen" (close)="isFormOpen = false"></app-server-form>
 

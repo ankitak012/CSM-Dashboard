@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ServerComponent } from './components/server/server.component';
 import { RouterModule } from '@angular/router';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { ServerFormComponent } from './components/server-form/server-form.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule,HeaderComponent,FooterComponent,ServerFormComponent,SidebarComponent,ServerComponent],
+  imports: [CommonModule,RouterOutlet,HeaderComponent,FooterComponent,ServerFormComponent,SidebarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'  
 })

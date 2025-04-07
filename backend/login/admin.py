@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User
+from .models import CustomUser
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ('user_name', 'email', 'is_admin', 'is_active')
@@ -8,4 +8,4 @@ class UserAdmin(admin.ModelAdmin):
     ordering = ('user_name',)
 
 # Register your models here.
-admin.site.register(User, UserAdmin)   
+admin.site.register(CustomUser, UserAdmin)   

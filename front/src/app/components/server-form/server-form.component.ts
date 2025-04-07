@@ -14,8 +14,10 @@ import { ServerFromService } from '../../api/server-from.service';
 
 export class ServerFormComponent {
   @Input() isVisible: boolean = false;
+  
   @Output() close = new EventEmitter<void>();
 
+  
   serverForm: FormGroup;
   emailInput: string = ''; 
 
@@ -33,29 +35,29 @@ export class ServerFormComponent {
   //   return this.serverForm.get('emails') as FormArray;
   // }
 
+  // Add new email to FormArray
   addEmail() {
-    const trimmed = this.emailInput.trim();
-
-    if (trimmed && !this.getEmails().value.some((e: any) => e.email === trimmed)) {
-      const newId = this.getEmails.length + 1; // Generate a temporary ID (backend will override it)
-      this.getEmails().push(this.fb.group({id: newId, email: trimmed })); // Store emails as objects
-      console.log('Added Email:', trimmed);
-      console.log('Current Emails:', this.getEmails().value);
+    if (this.emailInput.trim() && this.validateEmail(this.emailInput)) {
+      this.getEmails.push(this.fb.group({ email: this.emailInput.trim() }));
+      this.emailInput = ''; // Clear input field after adding
     }
-    this.emailInput = '';
   }
 
+  // Remove email from FormArray
   removeEmail(email: string) {
-    const emailArray = this.getEmails();
-    const index = emailArray.value.findIndex((e: any) => e.email === email);
+    const index = this.getEmails.controls.findIndex(ctrl => ctrl.value.email === email);
     if (index !== -1) {
-      emailArray.removeAt(index);
-      console.log('Removed Email:', email);
-      console.log('Current Emails:', this.getEmails().value);
+      this.getEmails.removeAt(index);
     }
+  }
+
+  // Validate email format
+  validateEmail(email: string): boolean {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailPattern.test(email);
   }
   
-  getEmails() {
+  get getEmails(): FormArray {
     return this.serverForm.get('emails') as FormArray; // Get emails as FormArray
   }
 
@@ -65,20 +67,21 @@ export class ServerFormComponent {
 
       const formData = {
         ...this.serverForm.value,
-        emails: this.getEmails().value.map((email: any, index: number) => ({
+        emails: this.getEmails.value.map((email: any, index: number) => ({
           id: index + 1, // Generate IDs (optional, backend should handle real IDs)
           email: email.email
         }))
       };
 
       console.log('Final JSON Sent to API:', formData);
+      console.log('Form Data:', this.serverForm.value);
 
       this.apiService.addServer(formData).subscribe({
         next: (response: any) => {
           console.log('Server created:', response);
           alert('Server added successfully!');
           this.serverForm.reset();
-          this.getEmails().reset(); // Clear emails after submission
+          this.getEmails.reset(); // Clear emails after submission
         },
         error: (error: any) => {
           console.error('Error creating server:', error);
@@ -88,7 +91,12 @@ export class ServerFormComponent {
     }
   }
 
+  // closeForm() {
+  //   this.close.emit();
+  // }
+
+  // Close form (you can emit an event if needed)
   closeForm() {
-    this.close.emit();
+    this.isVisible = false;
   }
 }

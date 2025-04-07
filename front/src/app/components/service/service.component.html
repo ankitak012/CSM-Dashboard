@@ -1,8 +1,4 @@
-
-
-
-
-<select [(ngModel)]="selectedTimeRange" (change)="applyTimeFilter()">
+<select [(ngModel)]="selectedTimeRange">
   <option value="minute">Last Minute</option>
   <option value="hour">Last Hour</option>
   <option value="day">Last Day</option>
@@ -11,7 +7,7 @@
   <option value="year">Last Year</option>
 </select>
 
-<div *ngFor="let service of filteredServices">
+<div *ngFor="let service of services">
   <h3>{{ service.server_name }} - {{ service.server }}</h3>
   <app-barchart [chartData]="service.data"></app-barchart>
 </div>

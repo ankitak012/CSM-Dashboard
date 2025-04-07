@@ -1,16 +1,32 @@
 from rest_framework import serializers
-from .models import User
+from .models import CustomUser
+from django.contrib.auth.hashers import check_password
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'user_name', 'email', 'email_password', 'user_password', 'is_active', 'is_admin']
-        extra_kwargs = {'user_password': {'write_only': True}}  # Hide password in responses
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    user_password = serializers.CharField()
+
+    def validate(self, data):
+        email = data.get("email")
+        password = data.get("user_password")
+
+        try:
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            raise serializers.ValidationError("Invalid email or password")
+
+        if not check_password(password, user.user_password):
+            raise serializers.ValidationError("Invalid email or password")
+
+        if not user.is_active:
+            raise serializers.ValidationError("Account is inactive")
+
+        data["user"] = user
+        return data
     
-    def create(self, validated_data):
-        user_password = validated_data.pop('user_password', None)
-        user = User(**validated_data)
-        if user_password:
-            user.set_password(user_password)  # Hash user_password before saving
-        user.save()
-        return user
+    
+# class UserSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = CustomUser
+#         fields = ['email', 'user_name'] 
+

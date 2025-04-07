@@ -21,5 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/',include('service.urls')),
     path('api/',include('server.urls')),
-    path('api/',include('login.urls')),
+    
 ]
+# path('api/',include('login.urls')),
