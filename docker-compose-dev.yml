@@ -38,7 +38,7 @@ services:
       - "${FRONTEND_PORT}:4200"
     volumes:
       - ./front:/app
-    command: sleep infinity
+    command: ./serve.sh
 
 volumes:
   postgres_data5: 

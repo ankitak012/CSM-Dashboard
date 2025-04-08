@@ -1,13 +1,11 @@
-<select [(ngModel)]="selectedTimeRange">
-  <option value="minute">Last Minute</option>
-  <option value="hour">Last Hour</option>
-  <option value="day">Last Day</option>
-  <option value="week">Last Week</option>
-  <option value="month">Last Month</option>
-  <option value="year">Last Year</option>
-</select>
-
-<div *ngFor="let service of services">
-  <h3>{{ service.server_name }} - {{ service.server }}</h3>
-  <app-barchart [chartData]="service.data"></app-barchart>
+<button class="btn btn-back" (click)="goBack()">
+  <i class="fas fa-arrow-left"></i>
+  << 
+</button>
+<div class="server-container">
+  <div *ngFor="let service of services" class="server-card"  style="cursor: pointer;" >
+    <h3>{{ service.server_name }} - {{ service.id }}</h3>
+    <p>Uptime: {{ service.uptime }} days</p>
+    <app-barchart [chartData]="service.data"></app-barchart>
+  </div>
 </div>

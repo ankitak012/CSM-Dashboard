@@ -3,17 +3,17 @@ import { ApiService } from '../../services/api.service';
 import { Chart, registerables } from 'chart.js';
 import { CommonModule,  NgFor } from '@angular/common';
 import { BarchartComponent } from '../../chart/barchart/barchart.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms'; // ✅ Import FormsModule
 import { ServicesService } from '../../api/services.service';
-
+import { Router } from '@angular/router';
 
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-service',
   standalone: true,
-  imports: [CommonModule, NgFor,BarchartComponent,FormsModule],
+  imports: [CommonModule, NgFor,BarchartComponent,FormsModule,RouterModule],
   templateUrl: './service.component.html',
   styleUrls: ['./service.component.css']
 })
@@ -34,11 +34,14 @@ export class ServiceComponent implements OnInit {
   selectedTimeRange: string = 'minute'; // Default selection
   
   // @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>; // ✅ Declare chartCanvas
-  constructor(private servicesService: ServicesService, private route: ActivatedRoute) {}
+  constructor(private servicesService: ServicesService, private route: ActivatedRoute, private router: Router) {}
+  
 
   @Input() server: any; // ✅ Accept server data from ServerComponent
 
-  
+  goBack() {
+    this.router.navigate(['/servers']);
+  }
 
   // ngOnInit() {
 
@@ -199,7 +202,11 @@ export class ServiceComponent implements OnInit {
     this.servicesService.getServicesByServerId(serverId).subscribe({
       next: (data: any[]) => {
         console.log('Services data received:', data);
-        this.services = data;
+        // Calculate uptime for each service
+        this.services = data.map(service => ({
+          ...service,
+          uptime: this.calculateDaysSince(service.created_on)
+        }));
       },
       error: (error) => {
         console.error('Error loading services:', error);
@@ -210,6 +217,13 @@ export class ServiceComponent implements OnInit {
         });
       }
     });
+  }
+
+  calculateDaysSince(createdOn: string): number {
+    const createdDate = new Date(createdOn);
+    const today = new Date();
+    const timeDiff = Math.abs(today.getTime() - createdDate.getTime());
+    return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
   }
 
 }

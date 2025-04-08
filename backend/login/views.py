@@ -14,7 +14,9 @@ class LoginView(APIView):
                 "user_name": user.user_name
             })
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 
-# class UserView(APIView):
-#     def get(self, request):
-#         return Response({"message": "User details fetched successfully"})
+class UserView(APIView):
+    def get(self, request):
+        return Response({"message": "User details fetched successfully"})   
+

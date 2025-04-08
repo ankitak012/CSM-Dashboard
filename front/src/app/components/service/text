@@ -23,3 +23,12 @@
     <button (click)="closeChart()" class="close-button">close</button>
   </div>
 </div> {% endcomment %}
+
+{% comment %} <select [(ngModel)]="selectedTimeRange">
+  <option value="minute">Last Minute</option>
+  <option value="hour">Last Hour</option>
+  <option value="day">Last Day</option>
+  <option value="week">Last Week</option>
+  <option value="month">Last Month</option>
+  <option value="year">Last Year</option>
+</select> {% endcomment %}
