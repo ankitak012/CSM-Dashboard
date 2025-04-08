@@ -22,42 +22,66 @@ th {
 
 
 .server-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  /* display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(900px, 1fr)); */
   gap: 20px;
   padding: 20px;
 }
 
-.server-card {
-  background: #f8f8f8d0;
+.server-card {    
+  width: 100%;
+  background: white;
   border-radius: 10px;
-  padding: 15px;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  text-align: left;
+  padding: 1%;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 77%);
+  margin: 2% 3%;
 }
 
 .server-card h3 {
-  font-size: 16px;
-  font-weight: bold;
-  color: #555;
-  margin: 0;
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  text-transform: capitalize;
 }
 
-.server-card p {
-  font-size: 14px;
-  color: #888;
-  text-align: right;
-  margin: 0;
+.service-data {
+  margin: 15px 0;
 }
 
-.server-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Adjust column size */
-  gap: 25px; /* Space between cards */
-  padding: 25px; /* Adjust padding as needed */
-  margin-left: 100px; /* Ensure space for sidebar */
-  margin-right: 100px; /* Ensure space for sidebar */
-  margin-top: 50px; /* Ensure space for header */
+.data-item {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.data-item:last-child {
+  border-bottom: none;
+}
+
+.data-item p {
+  margin: 0;
+  color: #666;
+}
+
+.btn-back {
+  margin: 20px;
+  padding: 10px 20px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-back:hover {
+  background-color: #5a6268;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .server-container {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Button Styles */
@@ -89,17 +113,6 @@ th {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.btn-back {
-  background-color: none;
-  color: black;
-}
-
-.btn-back:hover {
-  background-color: #545b62;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
 .btn:active {
   transform: translateY(0);
   box-shadow: none;
@@ -111,3 +124,76 @@ th {
   transform: none;
   box-shadow: none;
 }
+
+/* Container for each row */
+.container-div {
+  margin: 10px 0;
+  padding: 10px;
+  background: #161a1f;  /* Dark background */
+  border-radius: 10px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Scrollable status bar */
+.status-bar {
+  display: flex;
+  gap: 3px;
+  padding: 8px;
+  background-color: #292a2b;
+  border-radius: 10px;
+  white-space: nowrap; /* ✅ Prevent wrapping */
+  max-width: 100%; /* ✅ Ensures it doesn't stretch beyond container */
+}
+
+/* Individual bars */
+.bar {
+  position: relative;
+  /* height: 100%; */
+  /* flex: 1; */
+  /* min-width: 20px; */
+  cursor: pointer;
+  width: 10px; /* ✅ Fix width */
+  height: 25px; /* ✅ Fix height */
+  border-radius: 5px;
+  background-color: green;
+  /* display: inline-block; */
+
+}
+
+.date-tooltip {
+  display: none;
+  position: absolute;
+  background: rgba(192, 192, 192, 0.8);
+  color: rgb(48, 46, 46);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  /* z-index: 1000; */
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.bar:hover .date-tooltip {
+  display: block;
+}
+
+/* Status color classes */
+.status-red {
+  background-color: #F44336; /* Red */
+}
+
+.status-green {
+  background-color: #4CAF50; /* Green */
+}
+
+/* 
+.bar {
+  position: relative;
+  height: 100%;
+  flex: 1;
+  min-width: 20px;
+  cursor: pointer;
+
+}  */

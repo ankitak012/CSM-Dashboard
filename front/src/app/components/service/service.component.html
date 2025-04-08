@@ -1,11 +1,21 @@
 <button class="btn btn-back" (click)="goBack()">
   <i class="fas fa-arrow-left"></i>
-  << 
+  Back to Servers
 </button>
+
 <div class="server-container">
-  <div *ngFor="let service of services" class="server-card"  style="cursor: pointer;" >
-    <h3>{{ service.server_name }} - {{ service.id }}</h3>
-    <p>Uptime: {{ service.uptime }} days</p>
-    <app-barchart [chartData]="service.data"></app-barchart>
+  <div *ngFor="let serviceName of getServiceNames()" class="server-card">
+    <h3>{{ serviceName }}</h3>
+        
+    <div class="container-div">
+        <div class="status-bar-container">
+            <div class="status-bar" >
+                <div *ngFor="let entry of getServiceData(serviceName)" class="bar" [ngClass]="{'status-red': entry.state === false, 'status-green': entry.state === true}">
+                    <span class="date-tooltip">{{ entry.date }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
   </div>
 </div>

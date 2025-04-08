@@ -32,3 +32,10 @@
   <option value="month">Last Month</option>
   <option value="year">Last Year</option>
 </select> {% endcomment %}
+
+
+
+
+    <div *ngFor="let data of chartData" [style.backgroundColor]="getBarColor(data.value)">
+      {{ data.label }}: {{ data.value }}
+    </div>

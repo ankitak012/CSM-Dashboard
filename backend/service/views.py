@@ -13,9 +13,63 @@ class ServiceView(APIView):
     def get(self, request, server_id=None):
         if server_id:
             services = Service.objects.filter(server__id=server_id).order_by('-created_on')
-            serializer = ServiceSerializer(services, many=True)
+                                    
+            # Group services by their status
+            # grouped_data = defaultdict(list)
             
-        return Response(serializer.data)
+            service_response_data = {
+                'cometa_selenoid': [],
+                'cometa_front': [],
+                'cometa_novnc': [],
+                'cometa_scheduler': [],
+                'cometa_socket': [],
+                'cometa_redis': [],
+                'cometa_django': [],
+                'cometa_behave': [],
+                'cometa_postgres': [],
+            }
+                
+            for service in services:
+                service_response_data['cometa_selenoid'].append({
+                    "state":service.cometa_selenoid,
+                    "date":service.created_on
+                    })        
+                service_response_data['cometa_front'].append({
+                    "state":service.cometa_front,
+                    "date":service.created_on
+                    })        
+                service_response_data['cometa_novnc'].append({
+                    "state":service.cometa_novnc,
+                    "date":service.created_on
+                    })        
+                service_response_data['cometa_scheduler'].append({
+                    "state":service.cometa_scheduler,
+                    "date":service.created_on
+                    })        
+                service_response_data['cometa_socket'].append({
+                    "state":service.cometa_socket,
+                    "date":service.created_on
+                    })        
+                service_response_data['cometa_redis'].append({
+                    "state":service.cometa_redis,
+                    "date":service.created_on
+                    })        
+                service_response_data['cometa_django'].append({
+                    "state":service.cometa_django,
+                    "date":service.created_on
+                    })        
+                service_response_data['cometa_behave'].append({
+                    "state":service.cometa_behave,
+                    "date":service.created_on
+                    })        
+                service_response_data['cometa_postgres'].append({
+                    "state":service.cometa_postgres,
+                    "date":service.created_on
+                    })        
+                
+                
+        return JsonResponse(service_response_data)
+        # return Response(serializer.data)
 
     def post(self, request):
         serializer = ServiceSerializer(data=request.data)
@@ -43,7 +97,6 @@ def model_count(request):
         count = Service.objects.count()
         return JsonResponse({'count':count})
     
-
 
 def update_service(request):
     obj = Service.objects.get(id=194)

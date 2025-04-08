@@ -15,10 +15,10 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.updateGreeting();
     // Update greeting every minute
-    setInterval(() => {
-      this.currentTime = new Date();
-      this.updateGreeting();
-    }, 60000);
+    // setInterval(() => {
+    //   this.currentTime = new Date();
+    //   this.updateGreeting();
+    // }, 60000);
   }
 
   private updateGreeting() {

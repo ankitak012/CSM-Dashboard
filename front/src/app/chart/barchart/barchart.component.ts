@@ -16,6 +16,11 @@ export class BarchartComponent {
   numDivs: number = 0; // Default to 10 divs
   containers = Array.from({ length: 9 }, (_, i) => i); // Create an array [0,1,2,...,8]
 
+
+  constructor() {
+    console.log(this.chartData);
+  }
+
   // Method to update the value from child
   onCountUpdated(count: number) {
     this.numDivs = count;
