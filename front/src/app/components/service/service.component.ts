@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, ElementRef, Input, ChangeDetectorRef } fr
 import { ApiService } from '../../services/api.service';
 import { Chart, registerables } from 'chart.js';
 import { CommonModule,  NgFor } from '@angular/common';
-import { BarchartComponent } from '../../chart/barchart/barchart.component';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms'; // ✅ Import FormsModule
 import { ServicesService } from '../../api/services.service';

@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ServerService } from '../../api/server.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router'; // Ensure Router is imported
-import { ServerFormComponent } from '../server-form/server-form.component';
-import { BarchartComponent } from '..//..//chart//barchart/barchart.component';
-import { Routes } from '@angular/router';
+
 
 
 

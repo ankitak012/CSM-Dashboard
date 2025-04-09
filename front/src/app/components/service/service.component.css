@@ -29,18 +29,18 @@ th {
 }
 
 .server-card {    
-  width: 100%;
+  width: 90%;
   background: white;
   border-radius: 10px;
   padding: 1%;
   box-shadow: 0 2px 4px rgb(0 0 0 / 77%);
-  margin: 2% 3%;
+  margin: 2% 2%;
 }
 
 .server-card h3 {
   color: #333;
-  margin-bottom: 15px;
-  font-size: 1.2rem;
+  margin-bottom: 12px;
+  font-size: 12px;
   text-transform: capitalize;
 }
 
@@ -129,7 +129,7 @@ th {
 .container-div {
   margin: 10px 0;
   padding: 10px;
-  background: #161a1f;  /* Dark background */
+  background: #595b5c;  /* Dark background */
   border-radius: 10px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
 }
@@ -139,7 +139,7 @@ th {
   display: flex;
   gap: 3px;
   padding: 8px;
-  background-color: #292a2b;
+  background-color: rgb(52, 47, 47);
   border-radius: 10px;
   white-space: nowrap; /* ✅ Prevent wrapping */
   max-width: 100%; /* ✅ Ensures it doesn't stretch beyond container */
@@ -148,16 +148,11 @@ th {
 /* Individual bars */
 .bar {
   position: relative;
-  /* height: 100%; */
-  /* flex: 1; */
-  /* min-width: 20px; */
   cursor: pointer;
-  width: 10px; /* ✅ Fix width */
-  height: 25px; /* ✅ Fix height */
+  width: 8px; /* ✅ Fix width */
+  height: 20px; /* ✅ Fix height */
   border-radius: 5px;
-  background-color: green;
-  /* display: inline-block; */
-
+  
 }
 
 .date-tooltip {

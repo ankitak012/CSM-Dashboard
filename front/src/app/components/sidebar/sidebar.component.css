@@ -1,9 +1,8 @@
 aside {
-    width: 250px; /* Adjust width as needed */
-    height: 100vh; /* Full height */
+    width: 12%; /* Adjust width as needed */
+    height: 100%; /* Full height */
     background-color: #163B5A; /* Dark blue color */
     position: fixed;
-    left: 0;
     top: 30px;
     padding-top: 50px; /* Space for the header */
   }
