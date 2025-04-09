@@ -5,6 +5,9 @@ import { ServerComponent } from './components/server/server.component';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { WeatherAnimationComponent } from './components/weather-animation/weather-animation.component';
+
+
 export const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'service/:serverId', component: ServiceComponent },
@@ -12,5 +15,6 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'login', component: LoginComponent },
   { path: 'profile', component: ProfileComponent },
+  { path: 'weather', component: WeatherAnimationComponent },
   { path: '**', redirectTo: '/dashboard' } // Catch all route
 ];

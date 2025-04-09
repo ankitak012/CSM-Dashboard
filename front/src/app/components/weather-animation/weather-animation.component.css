@@ -1,0 +1,240 @@
+.weather-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-left: auto;
+  transition: all 0.5s ease;
+}
+
+/* Time of day backgrounds */
+.morning {
+  background: linear-gradient(to bottom, #FF8C2B, #FFD700, #87CEEB);
+}
+
+.afternoon {
+  background: linear-gradient(to bottom, #87CEEB);
+}
+
+.evening {
+  background: linear-gradient(to bottom, #FF4500, #FF8C00, #483D8B);
+}
+
+.night {
+  background: linear-gradient(to bottom, #191970, #483D8B);
+}
+
+/* Sun/Moon */
+.sun-moon {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  left: 70px;
+  transition: all 0.5s ease;
+}
+
+.morning .sun-moon {
+  background: #FFD700;
+  box-shadow: 0 0 50px #FFD700;
+  animation: sunRise 3s ease-out forwards, celestialGlow 3s infinite;
+  bottom: -30px;
+}
+
+.afternoon .sun-moon {
+  background: #FDB813;
+  box-shadow: 0 0 60px #FDB813;
+  animation: sunPeak 3s ease-out forwards, celestialGlow 3s infinite;
+  bottom: 70px;
+}
+
+.evening .sun-moon {
+  background: #FF8C00;
+  box-shadow: 0 0 40px #FF8C00;
+  animation: sunSet 3s ease-out forwards, celestialGlow 3s infinite;
+  top: 30px;
+}
+
+.night .sun-moon {
+  background: #F4F4F4;
+  box-shadow: 0 0 20px #F4F4F4;
+  animation: moonFloat 3s infinite ease-in-out;
+  top: 30px;
+}
+
+/* Clouds */
+.clouds {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  
+}
+
+.cloud {
+  position: absolute;
+  background: white;
+  border-radius: 20px;
+  opacity: 0.8;
+  
+}
+
+.cloud::before,
+.cloud::after {
+  content: '';
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+}
+
+.cloud-1 {
+  width: 60px;
+  height: 20px;
+  top: 40px;
+  left: -60px;
+  animation: moveCloud 15s infinite linear;
+}
+
+.cloud-1::before {
+  width: 25px;
+  height: 25px;
+  top: -10px;
+  left: 10px;
+}
+
+.cloud-1::after {
+  width: 20px;
+  height: 20px;
+  top: -8px;
+  left: 35px;
+}
+
+.cloud-2 {
+  width: 40px;
+  height: 15px;
+  top: 80px;
+  left: -40px;
+  animation: moveCloud 12s infinite linear;
+}
+
+.cloud-2::before {
+  width: 20px;
+  height: 20px;
+  top: -8px;
+  left: 5px;
+}
+
+.cloud-2::after {
+  width: 15px;
+  height: 15px;
+  top: -6px;
+  left: 22px;
+}
+
+/* Stars */
+.stars {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle 1.5s infinite ease-in-out;
+}
+
+.star:nth-child(1) { top: 20%; left: 20%; animation-delay: 0s; }
+.star:nth-child(2) { top: 30%; left: 50%; animation-delay: 0.3s; }
+.star:nth-child(3) { top: 40%; left: 80%; animation-delay: 0.6s; }
+.star:nth-child(4) { top: 60%; left: 30%; animation-delay: 0.9s; }
+.star:nth-child(5) { top: 70%; left: 60%; animation-delay: 1.2s; }
+.star:nth-child(6) { top: 80%; left: 40%; animation-delay: 1.5s; }
+.star:nth-child(7) { top: 50%; left: 70%; animation-delay: 1.8s; }
+.star:nth-child(8) { top: 25%; left: 85%; animation-delay: 2.1s; }
+
+/* Animations */
+@keyframes sunRise {
+  0% {
+    transform: translateY(160px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes sunPeak {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes sunSet {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(160px);
+    opacity: 0.5;
+  }
+}
+
+@keyframes moonFloat {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-10px) translateX(5px);
+  }
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+}
+
+@keyframes celestialGlow {
+  0% {
+    box-shadow: 0 0 40px currentColor;
+  }
+  50% {
+    box-shadow: 0 0 60px currentColor;
+  }
+  100% {
+    box-shadow: 0 0 40px currentColor;
+  }
+}
+
+@keyframes moveCloud {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(300%);
+  }
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+}
