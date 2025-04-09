@@ -83,4 +83,8 @@ export class ServiceComponent implements OnInit {
   getServiceData(serviceName: string): any[] {
     return this.services[serviceName] || [];
   }
+
+  goToServiceDetail() {
+    this.router.navigate(['/service-detail']);
+  }
 }

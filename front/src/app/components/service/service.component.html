@@ -3,7 +3,7 @@
   Back to Servers
 </button>
 
-<div class="server-container">
+<div class="server-container" (click)="goToServiceDetail()">
   <div *ngFor="let serviceName of getServiceNames()" class="server-card">
     <h4>{{ serviceName }}</h4>
         

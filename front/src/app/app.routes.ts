@@ -6,6 +6,8 @@ import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { WeatherAnimationComponent } from './components/weather-animation/weather-animation.component';
+import { ServiceDetailComponent } from './components/service-detail/service-detail.component';
+
 
 
 export const routes: Routes = [
@@ -16,5 +18,6 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'weather', component: WeatherAnimationComponent },
+  { path: 'service-detail', component: ServiceDetailComponent },
   { path: '**', redirectTo: '/dashboard' } // Catch all route
 ];
