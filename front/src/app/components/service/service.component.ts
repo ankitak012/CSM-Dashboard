@@ -1,6 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, ChangeDetectorRef } from '@angular/core';
-import { ApiService } from '../../services/api.service';
-import { Chart, registerables } from 'chart.js';
+import { Component, OnInit,  Input, ChangeDetectorRef } from '@angular/core';
 import { CommonModule,  NgFor } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms'; // ✅ Import FormsModule
@@ -8,7 +6,8 @@ import { ServicesService } from '../../api/services.service';
 import { Router } from '@angular/router';
 import { createDecipheriv } from 'crypto';
 
-Chart.register(...registerables);
+
+
 
 @Component({
   selector: 'app-service',
@@ -85,6 +84,7 @@ export class ServiceComponent implements OnInit {
   }
 
   goToServiceDetail() {
+    
     this.router.navigate(['/service-detail']);
   }
 }

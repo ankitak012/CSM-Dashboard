@@ -18,6 +18,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'weather', component: WeatherAnimationComponent },
+  { path: 'service', component: ServiceComponent },
   { path: 'service-detail', component: ServiceDetailComponent },
   { path: '**', redirectTo: '/dashboard' } // Catch all route
 ];

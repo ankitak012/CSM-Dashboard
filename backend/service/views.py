@@ -32,39 +32,40 @@ class ServiceView(APIView):
             for service in services:
                 service_response_data['cometa_selenoid'].append({
                     "state":service.cometa_selenoid,
-                    "date":service.created_on
+                    "error":service.error,
+                    "date":service.created_on.strftime('%Y-%m-%d %H:%M:%S')
                     })        
                 service_response_data['cometa_front'].append({
                     "state":service.cometa_front,
-                    "date":service.created_on
+                    "date":service.created_on.strftime('%Y-%m-%d %H:%M:%S')
                     })        
                 service_response_data['cometa_novnc'].append({
                     "state":service.cometa_novnc,
-                    "date":service.created_on
+                    "date":service.created_on.strftime('%Y-%m-%d %H:%M:%S')
                     })        
                 service_response_data['cometa_scheduler'].append({
                     "state":service.cometa_scheduler,
-                    "date":service.created_on
+                    "date":service.created_on.strftime('%Y-%m-%d %H:%M:%S')
                     })        
                 service_response_data['cometa_socket'].append({
                     "state":service.cometa_socket,
-                    "date":service.created_on
+                    "date":service.created_on.strftime('%Y-%m-%d %H:%M:%S')
                     })        
                 service_response_data['cometa_redis'].append({
                     "state":service.cometa_redis,
-                    "date":service.created_on
+                    "date":service.created_on.strftime('%Y-%m-%d %H:%M:%S')
                     })        
                 service_response_data['cometa_django'].append({
                     "state":service.cometa_django,
-                    "date":service.created_on
+                    "date":service.created_on.strftime('%Y-%m-%d %H:%M:%S')
                     })        
                 service_response_data['cometa_behave'].append({
                     "state":service.cometa_behave,
-                    "date":service.created_on
+                    "date":service.created_on.strftime('%Y-%m-%d %H:%M:%S')
                     })        
                 service_response_data['cometa_postgres'].append({
                     "state":service.cometa_postgres,
-                    "date":service.created_on
+                    "date":service.created_on.strftime('%Y-%m-%d %H:%M:%S')
                     })        
                 
                 

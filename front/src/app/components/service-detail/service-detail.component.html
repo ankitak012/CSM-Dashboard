@@ -1,6 +1,28 @@
-
+<button class="btn btn-back" (click)="goBack()">
+  <i class="fas fa-arrow-left"></i>
+  Back to server
+</button>
 
 <div class="service-detail-container">
-<p>service-detail works!</p>
-  <h1>Service Detail</h1>
+    <p>service-detail works!</p>
+    <h1>Service Detail</h1>
+
+
+<div class="server-container">
+  <div *ngFor="let serviceName of getServiceNames()" class="server-card">
+    <h4>{{ serviceName }}</h4>
+        
+    <div class="container-div">
+        <div class="status-bar-container">
+            <div class="status-bar" >
+                <div *ngFor="let entry of getServiceData(serviceName)" class="bar" [ngClass]="{'status-red': entry.state === false, 'status-green': entry.state === true}">
+                    <p>{{ entry.error }}</p>
+                    <span class="date-tooltip">{{ entry.date }}</span>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
 </div>

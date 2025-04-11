@@ -1,10 +1,30 @@
-<div class="weather-container" [ngClass]="timeOfDay">
-  <div class="sun-moon"></div>
-  <div class="clouds">
-    <div class="cloud cloud-1"></div>
-    <div class="cloud cloud-2"></div>
+<div class="weather-wrapper">
+  <div class="weather-container" [ngClass]="timeOfDay">
+    <div class="sun-moon"></div>
+    <div class="clouds">
+      <div class="cloud cloud-1"></div>
+      <div class="cloud cloud-2"></div>
+    </div>
+    <div class="stars" *ngIf="timeOfDay === 'night'">
+      <div class="star" *ngFor="let star of [1,2,3,4,5,6,7,8]"></div>
+    </div>
   </div>
-  <div class="stars" *ngIf="timeOfDay === 'night'">
-    <div class="star" *ngFor="let star of [1,2,3,4,5,6,7,8]"></div>
+  
+  <div class="weather-data" *ngIf="hasWeatherData()">
+    <div class="weather-info">
+      <h2 *ngIf="weatherData.location">{{weatherData.location}}</h2>
+      <div class="weather-details">
+        <p *ngIf="weatherData.temperature">Temperature: {{weatherData.temperature}}°C</p>
+        <p *ngIf="weatherData.humidity">Humidity: {{weatherData.humidity}}%</p>
+        <p *ngIf="weatherData.description">{{weatherData.description}}</p>
+      </div>
+      <div class="additional-info">
+        <p *ngFor="let item of weatherData | keyvalue">
+          <ng-container *ngIf="!['temperature', 'humidity', 'description', 'location'].includes(item.key)">
+            {{item.key | titlecase}}: {{item.value}}
+          </ng-container>
+        </p>
+      </div>
+    </div>
   </div>
 </div> 

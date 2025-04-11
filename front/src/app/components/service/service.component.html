@@ -5,14 +5,16 @@
 
 <div class="server-container" (click)="goToServiceDetail()">
   <div *ngFor="let serviceName of getServiceNames()" class="server-card">
-    <h4>{{ serviceName }}</h4>
+    <h4>{{ serviceName }}</h4> 
         
     <div class="container-div">
         <div class="status-bar-container">
             <div class="status-bar" >
                 <div *ngFor="let entry of getServiceData(serviceName)" class="bar" [ngClass]="{'status-red': entry.state === false, 'status-green': entry.state === true}">
+                    <p>{{ entry.error }}</p>
                     <span class="date-tooltip">{{ entry.date }}</span>
                 </div>
+                
             </div>
         </div>
     </div>
