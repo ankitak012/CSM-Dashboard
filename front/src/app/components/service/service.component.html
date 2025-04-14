@@ -3,21 +3,50 @@
   Back to Servers
 </button>
 
-<div class="server-container" (click)="goToServiceDetail()">
-  <div *ngFor="let serviceName of getServiceNames()" class="server-card">
-    <h4>{{ serviceName }}</h4> 
-        
-    <div class="container-div">
-        <div class="status-bar-container">
-            <div class="status-bar" >
-                <div *ngFor="let entry of getServiceData(serviceName)" class="bar" [ngClass]="{'status-red': entry.state === false, 'status-green': entry.state === true}">
-                    <p>{{ entry.error }}</p>
-                    <span class="date-tooltip">{{ entry.date }}</span>
-                </div>
-                
-            </div>
-        </div>
+<!-- Server Details Section -->
+<div class="server-details-container" *ngIf="serverDetails">
+  <h2>Server Details</h2>
+  <div class="server-info">
+    <div class="info-item">
+      <span class="label">Server Name:</span>
+      <span class="value">{{ serverDetails.server_name }}</span>
     </div>
+    <div class="info-item">
+      <span class="label">Server ID:</span>
+      <span class="value">{{ serverDetails.id }}</span>
+    </div>
+    <div class="info-item">
+      <span class="label">Uptime:</span>
+      <span class="value">{{ serverDetails.created_on }} days</span>
+    </div>
+    <!-- Add more server details as needed -->
+  </div>
+</div>
 
+<div class="server-container" (click)="goToServiceDetail()">
+  <div class="service-table">
+    <div class="table-header">
+      <div class="header-cell">Service Name</div>
+      <div class="header-cell">Status History</div>
+    </div>
+    
+    <div class="table-row" *ngFor="let serviceName of getServiceNames()">
+      <div class="table-cell service-name">
+        <h4>{{ serviceName }}</h4>
+      </div>
+      <div class="table-cell status-cell">
+        <div class="container-div">
+          <div class="status-bar-container">
+            <div class="status-bar">
+              <div *ngFor="let entry of getServiceData(serviceName)" 
+                   class="bar" 
+                   [ngClass]="{'status-red': entry.state === false, 'status-green': entry.state === true}">
+                <span class="date-tooltip">{{ entry.date }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -2,9 +2,10 @@
 <div class="server-container">
   <div *ngFor="let server of servers" class="server-card" (click)="onServerClick(server.id)" style="cursor: pointer;" >
     <h3>{{ server.server_name }}</h3>
-    <p>Uptime: {{ server.uptime }} days</p>
+    <p>Uptime: {{ server.created_on }} days</p>
+    
     <div class="server-chart">
-      wait
+      Hello
     </div>
   </div>
 </div>

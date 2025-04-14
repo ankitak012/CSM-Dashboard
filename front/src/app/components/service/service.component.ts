@@ -2,9 +2,10 @@ import { Component, OnInit,  Input, ChangeDetectorRef } from '@angular/core';
 import { CommonModule,  NgFor } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms'; // ✅ Import FormsModule
-import { ServicesService } from '../../api/services.service';
+import { ServicesService, ServiceResponse } from '../../api/services.service';
 import { Router } from '@angular/router';
 import { createDecipheriv } from 'crypto';
+import { ServerService } from '../../api/server.service';
 
 
 
@@ -19,7 +20,8 @@ import { createDecipheriv } from 'crypto';
 
 export class ServiceComponent implements OnInit {
   
-  services!:any;
+  services!: ServiceResponse;
+  serverDetails: any = null;
   displayedIndexes: number[] = [];  // To control the delay effect
   selectedService: any = null;
   showChart: boolean = false;
@@ -36,6 +38,7 @@ export class ServiceComponent implements OnInit {
   // @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>; // ✅ Declare chartCanvas
   constructor(
     private servicesService: ServicesService, 
+    private serverService: ServerService,
     private route: ActivatedRoute, 
     private router: Router,
     private cdr: ChangeDetectorRef
@@ -51,12 +54,13 @@ export class ServiceComponent implements OnInit {
   ngOnInit(): void {
     const serverId = Number(this.route.snapshot.paramMap.get('serverId'));
     this.loadServices(serverId);
+    this.loadServerDetails(serverId);
   }
 
   loadServices(serverId: number): void {
     console.log('Loading services for server ID:', serverId);
     this.servicesService.getServicesByServerId(serverId).subscribe({
-      next: (data: any[]) => {
+      next: (data: ServiceResponse) => {
         console.log('Services data received:', data);
         this.services = data;
         // Trigger change detection
@@ -73,6 +77,19 @@ export class ServiceComponent implements OnInit {
     });
   }
 
+  loadServerDetails(serverId: number): void {
+    this.serverService.getServers().subscribe({
+      next: (servers: any[]) => {
+        this.serverDetails = servers.find(server => server.id === serverId);
+        console.log('Server details loaded:', this.serverDetails);
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error loading server details:', error);
+      }
+    });
+  }
+
   // Helper method to get service names for display
   getServiceNames(): string[] {
     return Object.keys(this.services);
@@ -84,7 +101,7 @@ export class ServiceComponent implements OnInit {
   }
 
   goToServiceDetail() {
-    
-    this.router.navigate(['/service-detail']);
+    const serverId = Number(this.route.snapshot.paramMap.get('serverId'));
+    this.router.navigate(['/service-detail', serverId]);
   }
 }

@@ -14,17 +14,18 @@ aside {
   }
   
   nav ul li {
-    padding: 15px 20px;
+    padding: 1px 20px;
   }
   
   nav ul li a {
     color: white;
     text-decoration: none;
     display: block;
+    padding: 15px;
   }
   
   nav ul li a:hover {
     background-color: #1F4C6B;
-    padding: 15px;
+    
   }
   

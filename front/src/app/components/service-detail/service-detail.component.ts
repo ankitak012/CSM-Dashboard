@@ -1,20 +1,19 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
-import { ServicesService } from '../../api/services.service';
+import { ServicesService, ServiceResponse } from '../../api/services.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 import { CommonModule, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-
 @Component({
   selector: 'app-service-detail',
-  imports: [CommonModule,NgFor, CommonModule,FormsModule, RouterModule],
+  imports: [CommonModule, NgFor, CommonModule, FormsModule, RouterModule],
   templateUrl: './service-detail.component.html',
   styleUrl: './service-detail.component.css'
 })
 export class ServiceDetailComponent {
-
-  services!:any;
+  services!: any;
+  serverId!: number;
 
   constructor(
     private servicesService: ServicesService, 
@@ -23,20 +22,20 @@ export class ServiceDetailComponent {
     private cdr: ChangeDetectorRef
   ) {}
 
-  @Input() server: any; // ✅ Accept server data from ServerComponent
+  @Input() server: any;
 
   ngOnInit(): void {
-    const serverId = Number(this.route.snapshot.paramMap.get('serverId'));
-    this.loadServices(serverId);
+    // Get serverId from the current URL
+    this.serverId = Number(this.route.snapshot.paramMap.get('serverId'));
+    this.loadServices(this.serverId);
   }
 
   loadServices(serverId: number): void {
     console.log('Loading services for server ID:', serverId);
     this.servicesService.getServicesByServerId(serverId).subscribe({
-      next: (data: any[]) => {
+      next: (data: ServiceResponse) => {
         console.log('Services data received:', data);
         this.services = data;
-        // Trigger change detection
         this.cdr.detectChanges();
       },
       error: (error) => {
@@ -50,19 +49,17 @@ export class ServiceDetailComponent {
     });
   }
 
-   // Helper method to get service names for display
-   getServiceNames(): string[] {
-    return Object.keys(this.services);
+  getServiceNames(): string[] {
+    return Object.keys(this.services || {});
   }
 
-  // Helper method to get service data
   getServiceData(serviceName: string): any[] {
-    return this.services[serviceName] || [];
+    return this.services?.[serviceName] || [];
   }
 
   goBack() {
-    const serverId = Number(this.route.snapshot.paramMap.get('serverId'));
-    this.router.navigate(['/service/'+serverId]);
+    // Navigate back to the service list with the server ID
+    this.router.navigate(['/service', this.serverId]);
   }
 }
 

@@ -19,6 +19,6 @@ export const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'weather', component: WeatherAnimationComponent },
   { path: 'service', component: ServiceComponent },
-  { path: 'service-detail', component: ServiceDetailComponent },
+  { path: 'service-detail/:serverId', component: ServiceDetailComponent },
   { path: '**', redirectTo: '/dashboard' } // Catch all route
 ];

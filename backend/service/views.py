@@ -31,10 +31,10 @@ class ServiceView(APIView):
                 
             for service in services:
                 service_response_data['cometa_selenoid'].append({
-                    "state":service.cometa_selenoid,
-                    "error":service.error,
-                    "date":service.created_on.strftime('%Y-%m-%d %H:%M:%S')
-                    })        
+                    "state": service.cometa_selenoid,
+                    "error": service.error if service.error else "",
+                    "date": service.created_on.strftime('%Y-%m-%d %H:%M:%S')
+                })        
                 service_response_data['cometa_front'].append({
                     "state":service.cometa_front,
                     "date":service.created_on.strftime('%Y-%m-%d %H:%M:%S')

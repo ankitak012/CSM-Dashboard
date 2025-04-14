@@ -28,10 +28,8 @@ export class ServerComponent implements OnInit{
   ngOnInit(): void {
     this.serverService.getServers().subscribe(
       (data) => {
-        this.servers = data.map(server => ({
-          ...server,
-          uptime: this.calculateDaysSince(server.created_on)
-        }));
+        console.log('Server data received:', data);
+        this.servers = data;
       },
       (error) => {
         console.error('Error fetching server data:', error);
@@ -39,12 +37,12 @@ export class ServerComponent implements OnInit{
     );
   }
 
-  calculateDaysSince(createdOn: string): number {
-    const createdDate = new Date(createdOn);
-    const today = new Date();
-    const timeDiff = Math.abs(today.getTime() - createdDate.getTime());
-    return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-  }
+  // calculateDaysSince(createdOn: string): number {
+  //   const createdDate = new Date(createdOn);
+  //   const today = new Date();
+  //   const timeDiff = Math.abs(today.getTime() - createdDate.getTime());
+  //   return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+  // }
 
   
 
