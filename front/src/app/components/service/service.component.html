@@ -23,11 +23,12 @@
   </div>
 </div>
 
-<div class="server-container" (click)="goToServiceDetail()">
+<div class="server-container">
   <div class="service-table">
     <div class="table-header">
       <div class="header-cell">Service Name</div>
       <div class="header-cell">Status History</div>
+      <div class="header-cell">Actions</div>
     </div>
     
     <div class="table-row" *ngFor="let serviceName of getServiceNames()">
@@ -46,6 +47,9 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="table-cell action-cell">
+        <button class="btn btn-primary" (click)="goToServiceDetail(serviceName)">View Details</button>
       </div>
     </div>
   </div>

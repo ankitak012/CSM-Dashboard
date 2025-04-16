@@ -6,6 +6,7 @@ from service.models import Service
 from .serializers import ServiceSerializer
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+import json
 
 
 class ServiceView(APIView):
@@ -30,43 +31,62 @@ class ServiceView(APIView):
             }
                 
             for service in services:
+                # Parse the error JSON if it exists
+                error_data = {}
+                if service.error:
+                    if isinstance(service.error, str):
+                        try:
+                            error_data = json.loads(service.error)
+                        except json.JSONDecodeError:
+                            error_data = {}
+                    elif isinstance(service.error, dict):
+                        error_data = service.error
+                
                 service_response_data['cometa_selenoid'].append({
                     "state": service.cometa_selenoid,
-                    "error": service.error if service.error else "",
+                    "error": error_data.get('cometa_selenoid', '') if not service.cometa_selenoid else "",
                     "date": service.created_on.strftime('%Y-%m-%d %H:%M:%S')
                 })        
                 service_response_data['cometa_front'].append({
-                    "state":service.cometa_front,
-                    "date":service.created_on.strftime('%Y-%m-%d %H:%M:%S')
-                    })        
+                    "state": service.cometa_front,
+                    "error": error_data.get('cometa_front', '') if not service.cometa_front else "",
+                    "date": service.created_on.strftime('%Y-%m-%d %H:%M:%S')
+                })        
                 service_response_data['cometa_novnc'].append({
-                    "state":service.cometa_novnc,
-                    "date":service.created_on.strftime('%Y-%m-%d %H:%M:%S')
-                    })        
+                    "state": service.cometa_novnc,
+                    "error": error_data.get('cometa_novnc', '') if not service.cometa_novnc else "",
+                    "date": service.created_on.strftime('%Y-%m-%d %H:%M:%S')
+                })        
                 service_response_data['cometa_scheduler'].append({
-                    "state":service.cometa_scheduler,
-                    "date":service.created_on.strftime('%Y-%m-%d %H:%M:%S')
-                    })        
+                    "state": service.cometa_scheduler,
+                    "error": error_data.get('cometa_scheduler', '') if not service.cometa_scheduler else "",
+                    "date": service.created_on.strftime('%Y-%m-%d %H:%M:%S')
+                })        
                 service_response_data['cometa_socket'].append({
-                    "state":service.cometa_socket,
-                    "date":service.created_on.strftime('%Y-%m-%d %H:%M:%S')
-                    })        
+                    "state": service.cometa_socket,
+                    "error": error_data.get('cometa_socket', '') if not service.cometa_socket else "",
+                    "date": service.created_on.strftime('%Y-%m-%d %H:%M:%S')
+                })        
                 service_response_data['cometa_redis'].append({
-                    "state":service.cometa_redis,
-                    "date":service.created_on.strftime('%Y-%m-%d %H:%M:%S')
-                    })        
+                    "state": service.cometa_redis,
+                    "error": error_data.get('cometa_redis', '') if not service.cometa_redis else "",
+                    "date": service.created_on.strftime('%Y-%m-%d %H:%M:%S')
+                })        
                 service_response_data['cometa_django'].append({
-                    "state":service.cometa_django,
-                    "date":service.created_on.strftime('%Y-%m-%d %H:%M:%S')
-                    })        
+                    "state": service.cometa_django,
+                    "error": error_data.get('cometa_django', '') if not service.cometa_django else "",
+                    "date": service.created_on.strftime('%Y-%m-%d %H:%M:%S')
+                })        
                 service_response_data['cometa_behave'].append({
-                    "state":service.cometa_behave,
-                    "date":service.created_on.strftime('%Y-%m-%d %H:%M:%S')
-                    })        
+                    "state": service.cometa_behave,
+                    "error": error_data.get('cometa_behave', '') if not service.cometa_behave else "",
+                    "date": service.created_on.strftime('%Y-%m-%d %H:%M:%S')
+                })        
                 service_response_data['cometa_postgres'].append({
-                    "state":service.cometa_postgres,
-                    "date":service.created_on.strftime('%Y-%m-%d %H:%M:%S')
-                    })        
+                    "state": service.cometa_postgres,
+                    "error": error_data.get('cometa_postgres', '') if not service.cometa_postgres else "",
+                    "date": service.created_on.strftime('%Y-%m-%d %H:%M:%S')
+                })        
                 
                 
         return JsonResponse(service_response_data)

@@ -4,25 +4,35 @@
 </button>
 
 <div class="service-detail-container">
-    <p>service-detail works!</p>
-    <h1>Service Detail</h1>
+  <h1>{{ selectedField ? selectedField + ' Service Details' : 'Service Details' }}</h1>
+  <p *ngIf="getServiceNames().length === 0">No services found.</p>
 
-
-<div class="server-container">
-  <div *ngFor="let serviceName of getServiceNames()" class="server-card">
-    <h4>{{ serviceName }}</h4>
-        
-    <div class="container-div">
-        <div class="status-bar-container">
-            <div class="status-bar" >
-                <div *ngFor="let entry of getServiceData(serviceName)" class="bar" [ngClass]="{'status-red': entry.state === false, 'status-green': entry.state === true}">
-                    <p>{{ entry.error }}</p>
-                    <span class="date-tooltip">{{ entry.date }}</span>
-                </div>
-                
-            </div>
-        </div>
+  <div class="server-container">
+    <div *ngFor="let serviceName of getServiceNames()" class="server-card">
+      <h4>{{ serviceName }}</h4>
+      
+      <div class="service-details-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Error Message</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let entry of getServiceData(serviceName)" [ngClass]="{'status-red-row': entry.state === false, 'status-green-row': entry.state === true}">
+              <td>
+                <span class="status-indicator" [ngClass]="{'status-red': entry.state === false, 'status-green': entry.state === true}">
+                  {{ entry.state ? 'OK' : 'Error' }}
+                </span>
+              </td>
+              <td>{{ entry.error }}</td>
+              <td>{{ entry.date }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
 </div>

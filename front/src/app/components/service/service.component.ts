@@ -100,8 +100,8 @@ export class ServiceComponent implements OnInit {
     return this.services[serviceName] || [];
   }
 
-  goToServiceDetail() {
+  goToServiceDetail(field: string) {
     const serverId = Number(this.route.snapshot.paramMap.get('serverId'));
-    this.router.navigate(['/service-detail', serverId]);
+    this.router.navigate(['/service-detail', serverId], { queryParams: { field: field } });
   }
 }

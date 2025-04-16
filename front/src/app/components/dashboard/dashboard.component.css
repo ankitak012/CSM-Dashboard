@@ -1,15 +1,13 @@
 .dashboard-container {
   padding: 20px;
-  margin-top: 10px;
   transition: all 0.9s ease;
-  margin-bottom: 5px;
-  height: 80%;
   background-color: #f0f0f0;
-  margin-left: 20px;
-  margin-right: 20px;
-  border-radius: 15px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  position: sticky;
+  /* position: relative; */
+  margin-top: 15px;
+  margin-left: 40px;
+  margin-bottom: 0;
+  
   
 }
 
@@ -23,7 +21,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 8px;
   margin-top: 8px;
-  position: sticky;
+  /* position: sticky; */
   z-index: 1;
 }
 

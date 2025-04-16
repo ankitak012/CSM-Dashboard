@@ -2,14 +2,13 @@
     width: 100%;
     background-color: #ddd; /* Light grey */
     color: #888;
-    text-align: center;
-    padding: 5px 30px 50px 30px;
+    /* padding-top: 5px; */
     font-size: 14px;
-    position: sticky;
-    bottom: 0;
-    height: 10px;
-    margin: 0;
-    bottom: 0;
+    position: relative;
+    /* position: absolute; */
+    /* bottom: 0; */
+    /* height: 7%; */
+    /* margin: 0; */
     z-index: 10; /* must be higher than sidebar's z-index */
   }
   

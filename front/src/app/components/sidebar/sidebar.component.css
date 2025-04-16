@@ -1,10 +1,11 @@
 aside {
-    width: 12%; /* Adjust width as needed */
-    height: 100%; /* Full height */
+    width: 180px; /* Adjust width as needed */
+    height: 1000px; 
     background-color: #163B5A; /* Dark blue color */
     position: fixed;
     top: 30px;
     padding-top: 50px; /* Space for the header */
+    cursor: pointer;
   }
   
   nav ul {
