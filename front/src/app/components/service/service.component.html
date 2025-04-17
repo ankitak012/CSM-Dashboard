@@ -27,7 +27,7 @@
   <div class="filter-container">
     <label for="timeFilter">Filter by Time: </label>
     <select id="timeFilter" [(ngModel)]="selectedTimeFilter" (change)="onTimeFilterChange()">
-      <option value="minute">Minute</option>
+      <option value="minit">Minit</option>
       <option value="hour">Hour</option>
       <option value="day">Day</option>
       <option value="month">Month</option>
@@ -39,14 +39,14 @@
     <div class="date-container">
       <label for="startTime">Select start date: </label>
       <div class="input-with-icon">
-        <input id="startTime" type="date" [(ngModel)]="startDate" #startInput>
+        <input id="startTime" type="date" [(ngModel)]="startDate" (change)="applyTimeFilter()" #startInput>
       </div>
     </div>
 
     <div class="date-container">
       <label for="endTime">Select end date: </label>
       <div class="input-with-icon">
-        <input id="endTime" type="date" [(ngModel)]="endDate" #endInput>
+        <input id="endTime" type="date" [(ngModel)]="endDate" (change)="applyTimeFilter()" #endInput>
       </div>
     </div>
   </div>

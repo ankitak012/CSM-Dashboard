@@ -86,14 +86,21 @@ export class ServiceComponent implements OnInit {
     const now = new Date();
     this.filteredServiceData = {};
 
+    const start = this.startDate ? new Date(this.startDate) : null;
+    const end = this.endDate ? new Date(this.endDate) : null;
+    if (end) end.setHours(23, 59, 59, 999); // Include the full end date
+
     for (const key in this.allServiceData) {
       console.log("this.allServiceData : ",this.allServiceData)
+
       this.filteredServiceData[key] = this.allServiceData[key].filter((service:any) => {
         const entryTime = new Date(service.date);
-        console.log(entryTime)
         const diff = now.getTime() - entryTime.getTime();
-        console.log(diff)
-
+        
+         // 1️⃣ Check if date range is selected
+        if (start && end) {
+          return entryTime >= start && entryTime <= end;
+        }
 
         switch (this.selectedTimeFilter.toLowerCase()) {
           case 'minute': return diff < 1000 * 60;
@@ -144,10 +151,12 @@ export class ServiceComponent implements OnInit {
 
   onTimeFilterChange(): void {
     this.applyTimeFilter();
+    this.startDate = '';
+    this.endDate = '';
   }
 
   
-
+  
 
   
 }
