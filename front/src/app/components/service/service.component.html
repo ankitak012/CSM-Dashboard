@@ -23,6 +23,36 @@
   </div>
 </div>
 
+<div class="server-actions-container">
+  <div class="filter-container">
+    <label for="timeFilter">Filter by Time: </label>
+    <select id="timeFilter" [(ngModel)]="selectedTimeFilter" (change)="onTimeFilterChange()">
+      <option value="minute">Minute</option>
+      <option value="hour">Hour</option>
+      <option value="day">Day</option>
+      <option value="month">Month</option>
+      <option value="year">Year</option>
+    </select>
+  </div>
+
+  <div class="date-wrapper">
+    <div class="date-container">
+      <label for="startTime">Select start date: </label>
+      <div class="input-with-icon">
+        <input id="startTime" type="date" [(ngModel)]="startDate" #startInput>
+      </div>
+    </div>
+
+    <div class="date-container">
+      <label for="endTime">Select end date: </label>
+      <div class="input-with-icon">
+        <input id="endTime" type="date" [(ngModel)]="endDate" #endInput>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="server-container">
   <div class="service-table">
     <div class="table-header">

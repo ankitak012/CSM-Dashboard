@@ -1,14 +1,8 @@
 .footer {
-    width: 100%;
-    background-color: #ddd; /* Light grey */
+    width: 100%; /* Light grey */
     color: #888;
-    /* padding-top: 5px; */
     font-size: 14px;
     position: relative;
-    /* position: absolute; */
-    /* bottom: 0; */
-    /* height: 7%; */
-    /* margin: 0; */
     z-index: 10; /* must be higher than sidebar's z-index */
   }
   

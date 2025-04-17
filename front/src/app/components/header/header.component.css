@@ -1,15 +1,13 @@
 .header {
     width: 100%;
     background-color:#163B5A;
-    color: white;
     padding: 10px;
-    /* align-items: flex-start; */
     border-bottom: 5px solid #0c3952;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    right: 0;
+    
 }
 
 .header h3 {

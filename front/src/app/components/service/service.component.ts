@@ -20,21 +20,23 @@ import { ServerService } from '../../api/server.service';
 
 export class ServiceComponent implements OnInit {
   
-  services!: ServiceResponse;
+  //services!: ServiceResponse;
+  services: { [key: string]: any[] } = {};
   serverDetails: any = null;
   displayedIndexes: number[] = [];  // To control the delay effect
   selectedService: any = null;
-  showChart: boolean = false;
-  myChart: any;
+
+  startDate: string = '';
+  endDate: string = '';
 
   serverGroups: any[] = [];
-  chartVisibility: { [key: string]: boolean } = {}; // Track visibility of each chart
-  visibleCharts: { [key: string]: boolean } = {}; 
   filteredData: { [key: string]: any[] } = {}; // Store filtered data
-  allServices: any[] = []; // Store all service data
-  filteredServices: any[] = []; // ✅ Fix: Declare filteredServices
-  selectedTimeRange: string = 'minute'; // Default selection
   
+  selectedTimeFilter: string = 'month'; // default
+  //allServiceData: any[] = []; // raw from backend
+  allServiceData: { [key: string]: any[] } = {};
+
+  filteredServiceData: { [key: string]: any[] } = {};
   // @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>; // ✅ Declare chartCanvas
   constructor(
     private servicesService: ServicesService, 
@@ -44,7 +46,6 @@ export class ServiceComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
   
-
   @Input() server: any; // ✅ Accept server data from ServerComponent
 
   goBack() {
@@ -55,15 +56,19 @@ export class ServiceComponent implements OnInit {
     const serverId = Number(this.route.snapshot.paramMap.get('serverId'));
     this.loadServices(serverId);
     this.loadServerDetails(serverId);
+    this.applyTimeFilter();
   }
 
   loadServices(serverId: number): void {
     console.log('Loading services for server ID:', serverId);
+    
     this.servicesService.getServicesByServerId(serverId).subscribe({
-      next: (data: ServiceResponse) => {
+      next: (data: any) => {
         console.log('Services data received:', data);
-        this.services = data;
-        // Trigger change detection
+
+        this.allServiceData = data;
+        // Apply filter after loading
+        this.applyTimeFilter();
         this.cdr.detectChanges();
       },
       error: (error) => {
@@ -75,6 +80,38 @@ export class ServiceComponent implements OnInit {
         });
       }
     });
+  }
+
+  applyTimeFilter(): void {
+    const now = new Date();
+    this.filteredServiceData = {};
+
+    for (const key in this.allServiceData) {
+      console.log("this.allServiceData : ",this.allServiceData)
+      this.filteredServiceData[key] = this.allServiceData[key].filter((service:any) => {
+        const entryTime = new Date(service.date);
+        console.log(entryTime)
+        const diff = now.getTime() - entryTime.getTime();
+        console.log(diff)
+
+
+        switch (this.selectedTimeFilter.toLowerCase()) {
+          case 'minute': return diff < 1000 * 60;
+          case 'hour': return diff < 1000 * 60 * 60;
+          case 'day': return diff < 1000 * 60 * 60 * 24;
+          case 'month': return diff < 1000 * 60 * 60 * 24 * 30;
+          case 'year': return diff < 1000 * 60 * 60 * 24 * 365;
+          default: return true;
+        }
+        
+      });
+    }
+
+    // Optional: update displayed services directly if your template uses `services`
+    this.services = this.filteredServiceData;
+    console.log("Filtered services (1 month):", this.services);
+
+
   }
 
   loadServerDetails(serverId: number): void {
@@ -96,12 +133,21 @@ export class ServiceComponent implements OnInit {
   }
 
   // Helper method to get service data
-  getServiceData(serviceName: string): any[] {
-    return this.services[serviceName] || [];
+  getServiceData(key: string): any[] {
+    return this.services[key] || [];
   }
 
   goToServiceDetail(field: string) {
     const serverId = Number(this.route.snapshot.paramMap.get('serverId'));
     this.router.navigate(['/service-detail', serverId], { queryParams: { field: field } });
   }
+
+  onTimeFilterChange(): void {
+    this.applyTimeFilter();
+  }
+
+  
+
+
+  
 }

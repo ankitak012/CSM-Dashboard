@@ -36,7 +36,6 @@ html, body {
     color: white;
     display: flex;
     align-items: center;
-
     justify-content: space-between;
   }
   
@@ -49,7 +48,7 @@ html, body {
   
   .dashboard-content {
     flex: 1;
-    display: flex;
+    /* display: flex; */
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: flex-start;
