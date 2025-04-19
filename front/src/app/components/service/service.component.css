@@ -307,42 +307,12 @@ th {
   font-size: 16px;
 }
 
-/* Filter Container */
-.filter-container {
-  margin-bottom: 1rem;
-  font-weight: bold;
-  margin-left: 1.4%;
-  margin-top: 1%;
-}
 
-/* Date Wrapper */
-.date-wrapper {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
-  margin-left: 10%;
-  margin-top: 1%;
-}
-
-.date-container {
-  color: #333;
-  font-weight: bold;
-  font-size: 16px;
-
-}
-
-
-
-.input-with-icon {
-  display: inline;
-  gap: 1px;
-  /* align-items: center; */
-  /* position: relative; */
-}
 
 .input-with-icon input[type="date"] {
-  padding-right: 2rem;
+  padding-right: 30%;
   padding-right: 2px;
+  cursor: pointer;
 }
 
 .calendar-icon {
@@ -350,28 +320,40 @@ th {
   height: 24px;
   cursor: pointer;
   margin-left: -30px;
+  cursor: pointer;
 }
 
 
 .server-actions-container {
   display: flex;
   gap: 1%;
-  border: 1px solid blue;
   width: 83%;
   margin-left: 10%;
-  margin-bottom: 0;
+  padding: 10px;
   border-radius: 5px;
-  text-align: center;
+  flex-wrap: wrap;
 }
 
-.filter-btn{
-  /* margin-top: 1%; */
-  margin-bottom: 0;
-  background-color: #3ece43;
-  /* padding: 1px; */
-  padding-top: 0;
-  padding-bottom: 0;
-  padding: 0%;
-  text-align: center;
+
+
+.filter-container,
+.date-wrapper,
+.date-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.input-with-icon {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.filter-btn {
+  padding: 4px 12px;
+  background-color: #28a745;
   color: white;
+  border: 1px solid black;
+  cursor: pointer;
 }

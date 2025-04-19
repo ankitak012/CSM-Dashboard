@@ -82,44 +82,100 @@ export class ServiceComponent implements OnInit {
     });
   }
 
+  // applyTimeFilter(): void {
+  //   const now = new Date();
+  //   this.filteredServiceData = {};
+
+  //   const start = this.startDate ? new Date(this.startDate) : null;
+  //   const end = this.endDate ? new Date(this.endDate) : null;
+  //   if (end) end.setHours(23, 59, 59, 999); // Include the full end date
+
+  //   for (const key in this.allServiceData) {
+  //     console.log("this.allServiceData : ",this.allServiceData)
+
+  //     this.filteredServiceData[key] = this.allServiceData[key].filter((service:any) => {
+  //       const entryTime = new Date(service.date);
+  //       const diff = now.getTime() - entryTime.getTime();
+        
+  //        // 1️⃣ Check if date range is selected
+  //       if (start && end) {
+  //         return entryTime >= start && entryTime <= end;
+  //       }
+
+  //       switch (this.selectedTimeFilter.toLowerCase()) {
+  //         case 'minute': return diff < 1000 * 60;
+  //         case 'hour': return diff < 1000 * 60 * 60;
+  //         case 'day': return diff < 1000 * 60 * 60 * 24;
+  //         case 'month': return diff < 1000 * 60 * 60 * 24 * 30;
+  //         case 'year': return diff < 1000 * 60 * 60 * 24 * 365;
+  //         default: return true;
+  //       }
+        
+  //     });
+  //   }
+
+  //   // Optional: update displayed services directly if your template uses `services`
+  //   this.services = this.filteredServiceData;
+  //   console.log("Filtered services (1 month):", this.services);
+
+
+  // }
+
   applyTimeFilter(): void {
     const now = new Date();
     this.filteredServiceData = {};
-
+  
     const start = this.startDate ? new Date(this.startDate) : null;
     const end = this.endDate ? new Date(this.endDate) : null;
     if (end) end.setHours(23, 59, 59, 999); // Include the full end date
-
+  
+    // Define time range for selectedTimeFilter if start/end are not selected
+    let timeThreshold: Date | null = null;
+    if (!start && !end) {
+      switch (this.selectedTimeFilter.toLowerCase()) {
+        case 'minute':
+          timeThreshold = new Date(now.getTime() - 1000 * 60);
+          break;
+        case 'hour':
+          timeThreshold = new Date(now.getTime() - 1000 * 60 * 60);
+          break;
+        case 'day':
+          timeThreshold = new Date(now.getTime() - 1000 * 60 * 60 * 24);
+          break;
+        case 'month':
+          timeThreshold = new Date(now.getTime() - 1000 * 60 * 60 * 24 * 30);
+          break;
+        case 'year':
+          timeThreshold = new Date(now.getTime() - 1000 * 60 * 60 * 24 * 365);
+          break;
+        default:
+          timeThreshold = null;
+      }
+    }
+  
     for (const key in this.allServiceData) {
-      console.log("this.allServiceData : ",this.allServiceData)
-
-      this.filteredServiceData[key] = this.allServiceData[key].filter((service:any) => {
+      this.filteredServiceData[key] = this.allServiceData[key].filter((service: any) => {
         const entryTime = new Date(service.date);
-        const diff = now.getTime() - entryTime.getTime();
-        
-         // 1️⃣ Check if date range is selected
+  
+        // ✅ 1. If both start and end selected, filter by range
         if (start && end) {
           return entryTime >= start && entryTime <= end;
         }
-
-        switch (this.selectedTimeFilter.toLowerCase()) {
-          case 'minute': return diff < 1000 * 60;
-          case 'hour': return diff < 1000 * 60 * 60;
-          case 'day': return diff < 1000 * 60 * 60 * 24;
-          case 'month': return diff < 1000 * 60 * 60 * 24 * 30;
-          case 'year': return diff < 1000 * 60 * 60 * 24 * 365;
-          default: return true;
+  
+        // ✅ 2. If timeThreshold is set (Minute, Hour, etc.), compare
+        if (timeThreshold) {
+          return entryTime >= timeThreshold && entryTime <= now;
         }
-        
+  
+        // ✅ 3. Default: Show everything
+        return true;
       });
     }
-
-    // Optional: update displayed services directly if your template uses `services`
+  
     this.services = this.filteredServiceData;
-    console.log("Filtered services (1 month):", this.services);
-
-
+    console.log("Filtered services:", this.services);
   }
+  
 
   loadServerDetails(serverId: number): void {
     this.serverService.getServers().subscribe({
