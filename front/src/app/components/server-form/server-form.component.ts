@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule, FormArray, FormBuilder, FormGroup, Va
 import { CommonModule } from '@angular/common'; // Import CommonModule
 import { ServerFromService } from '../../api/server-from.service';
 import { response } from 'express';
+import { error } from 'console';
 
 
 @Component({
@@ -49,19 +50,43 @@ export class ServerFormComponent {
   
 
   onSubmit() {
+    const formData = this.serverForm.value;
+    const rawEmails = formData.emails;
+
+    const emailList = rawEmails
+      .split(/[;,]+/)
+      .map((e: string) => e.trim())
+      .filter((e: string) => e);
+
+    // Check for duplicates
+    const hasDuplicates = new Set(emailList).size !== emailList.length;
+
+    if (hasDuplicates) {
+      this.serverForm.get('emails')?.setErrors({ duplicate: true });
+      return;
+    }
 
     if (this.serverForm.valid) {
-      const formData = this.serverForm.value;
       console.log('Submitted data:', formData);
-      this.apiService.addServer(formData).subscribe(response => {
-        console.log('Saved!', response)
-      })
-      // You can emit this data or call a service here
-     
+      this.apiService.addServer(formData).subscribe({
+        next: response => {
+          console.log('Saved!', response);
+          this.serverForm.reset();
+          this.closeForm();
+        }, 
+      error: error => {
+        console.log('Backend error:', error)
 
-      // Reset and optionally close form after submit
-      this.serverForm.reset();
-      this.closeForm();
+        // Show error on the email field if duplicate
+        if (error.error && error.error.emails) {
+          const emailError = Array.isArray(error.error.emails) ? error.error.emails.join(' ') : error.error.emails;
+          this.serverForm.get('emails')?.setErrors({ backend: emailError });
+        } else if (error.error && error.error.non_field_errors) {
+          const generalError = error.error.non_field_errors.join(' ');
+          this.serverForm.get('emails')?.setErrors({ backend: generalError });
+        }
+      }
+    });
     } else {
       this.serverForm.markAllAsTouched();
     }

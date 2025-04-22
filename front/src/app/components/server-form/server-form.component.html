@@ -23,8 +23,11 @@
 
       <label>Emails:</label>
       <input type="text" formControlName="emails" placeholder="Type email and press Enter or ;"/>
-      <div class="error" *ngIf="serverForm.get('emails')?.touched && serverForm.get('emails')?.invalid">
+      <div class="error" *ngIf="serverForm.get('emails')?.touched && serverForm.get('emails')?.hasError('required')">
         At least one email is required.
+      </div>
+      <div class="error" *ngIf="serverForm.get('emails')?.hasError('backend')">
+        {{ serverForm.get('emails')?.getError('backend') }}
       </div>
 
 

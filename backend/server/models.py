@@ -12,11 +12,20 @@ class Server(models.Model):
     emails = models.JSONField(default=list)  # Stores list of email objects
 
     def save(self, *args, **kwargs):
+        duplicate_emails = []
         # Clean and deduplicate emails
         if isinstance(self.emails, list) and all(isinstance(e, str) for e in self.emails):
             cleaned_emails = [email.strip() for email in self.emails if email.strip()]
-            unique_emails = list(OrderedDict.fromkeys(cleaned_emails)) 
+            duplicate_emails = [email for email in cleaned_emails if cleaned_emails.count(email) > 1]
 
+            
+            if duplicate_emails:
+                raise ValidationError({
+                    'emails': [f"Duplicate email(s) found for this server: {', '.join(set(duplicate_emails))}"]
+                })
+            
+            unique_emails = list(OrderedDict.fromkeys(cleaned_emails)) 
+            
             self.emails = [
                 {"id": idx + 1, "email": email}
                 for idx, email in enumerate(unique_emails)

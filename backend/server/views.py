@@ -26,11 +26,13 @@ class ServerView(APIView):
         print("Updated data['emails']:", data['emails'])
         
         serializer = ServerSerializer(data=data)
-        if serializer.is_valid():
-            instance = serializer.save()
-            print("Saved instance:", instance)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try: 
+            if serializer.is_valid():
+                instance = serializer.save()
+                print("Saved instance:", instance)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except ValidationError as e: 
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
     def put(self, request, pk):
