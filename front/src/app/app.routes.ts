@@ -7,6 +7,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { WeatherAnimationComponent } from './components/weather-animation/weather-animation.component';
 import { ServiceDetailComponent } from './components/service-detail/service-detail.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { Component } from '@angular/core';
 
 
 
@@ -20,5 +22,6 @@ export const routes: Routes = [
   { path: 'weather', component: WeatherAnimationComponent },
   { path: 'service', component: ServiceComponent },
   { path: 'service-detail/:serverId', component: ServiceDetailComponent },
+  { path: 'settings',component: SettingsComponent},
   { path: '**', redirectTo: '/dashboard' } // Catch all route
 ];

@@ -22,4 +22,8 @@ export class SidebarComponent {
   gotodashborad() {
     this.router.navigate(['/dashboard']);
   }
+
+  gotosetting() {
+    this.router.navigate(['/settings'])
+  }
 }

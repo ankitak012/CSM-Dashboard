@@ -1,0 +1,20 @@
+
+h4 {
+    display: flex;
+    align-items: center;
+    /* gap: 0.5rem; */
+    font-size: 1rem;
+    font-weight: 300;
+    color: #444;
+    padding: 1rem 0;
+    margin-left: 40%;
+    margin-top: 22%;
+    margin-bottom: 22%;
+  }
+  
+  mat-icon {
+    font-size: 1rem;
+    color: #111216; 
+    font-weight: 300;
+  }
+  

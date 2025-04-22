@@ -1,6 +1,8 @@
 
 from django.db import models
 from django.utils import timezone
+from django.core.exceptions import ValidationError
+from collections import OrderedDict
 
 class Server(models.Model):
     server_name = models.CharField(max_length=255)
@@ -10,10 +12,23 @@ class Server(models.Model):
     emails = models.JSONField(default=list)  # Stores list of email objects
 
     def save(self, *args, **kwargs):
-        # Ensure unique email IDs and update email count
-        unique_emails = {email["id"]: email for email in self.emails}.values()
-        self.emails = list(unique_emails)  # Remove duplicates based on "id"
+        # Clean and deduplicate emails
+        if isinstance(self.emails, list) and all(isinstance(e, str) for e in self.emails):
+            cleaned_emails = [email.strip() for email in self.emails if email.strip()]
+            unique_emails = list(OrderedDict.fromkeys(cleaned_emails)) 
+
+            self.emails = [
+                {"id": idx + 1, "email": email}
+                for idx, email in enumerate(unique_emails)
+            ]
+
+
+        elif isinstance(self.emails, list) and all(isinstance(e, dict) and 'email' in e for e in self.emails):
+            # Already in desired format, skip transformation
+            pass
+            
         super().save(*args, **kwargs)
+
 
     def email_count(self):
         return len(self.emails)

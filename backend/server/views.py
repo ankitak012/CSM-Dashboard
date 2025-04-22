@@ -12,11 +12,26 @@ class ServerView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = ServerSerializer(data=request.data)
+        print("Received data from frontend:", request.data)  # Debug print
+        
+        data = request.data.copy()
+        # Extract the email string and convert it into list
+        email_string = data.get('emails', '')
+        print("email_string: ",email_string)
+        
+        email_list = [email.strip() for email in email_string.split(';') if email.strip()]
+        print("Parsed email list:", email_list)
+        
+        data['emails']= email_list
+        print("Updated data['emails']:", data['emails'])
+        
+        serializer = ServerSerializer(data=data)
         if serializer.is_valid():
-            serializer.save()
+            instance = serializer.save()
+            print("Saved instance:", instance)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 
     def put(self, request, pk):
         server = get_object_or_404(Server, pk=pk)

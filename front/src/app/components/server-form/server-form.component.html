@@ -1,34 +1,38 @@
 <div class="form-overlay" *ngIf="isVisible">
   <div class="server-form">
-    <h2>Add Server</h2>
+    <h2>Add Server Details</h2>
 
-    <form [formGroup]="serverForm" (ngSubmit)="submitForm()">
+    <form [formGroup]="serverForm" (ngSubmit)="onSubmit()">
       <label>Server Name:</label>
       <input type="text" formControlName="server_name">
+      <div class="error" *ngIf="serverForm.get('server_name')?.touched && serverForm.get('server_name')?.invalid">
+         Server Name is required.
+      </div>
 
       <label>Server Secret Name:</label>
       <input type="text" formControlName="server_secret_name">
+      <div class="error" *ngIf="serverForm.get('server_secret_name')?.touched && serverForm.get('server_secret_name')?.invalid">
+        Secret Name is required.
+      </div>
 
       <label>Server Secret Password:</label>
       <input type="text" formControlName="server_secret_password">
+      <div class="error" *ngIf="serverForm.get('server_secret_password')?.touched && serverForm.get('server_secret_password')?.invalid">
+        Secret Password is required.
+      </div>
 
       <label>Emails:</label>
-      <div class="email-input-wrapper">
-        <div class="email-tag" *ngFor="let emailCtrl of getEmails.controls; let i = index">
-           {{ emailCtrl.value.email }}
-            <span class="remove" (click)="removeEmail(emailCtrl.value.email)">×</span>
-        </div>
-        <input
-            type="text"
-            [(ngModel)]="emailInput"
-            (keydown.enter)="addEmail()"
-            placeholder="Type email and press Enter"
-        />
-        </div>
-        <div class="button-container">
-            <button class="save-btn" type="submit">Save</button>
-            <button class="close-btn" type="button" (click)="closeForm()">Cancel</button>
-        </div>
+      <input type="text" formControlName="emails" placeholder="Type email and press Enter or ;"/>
+      <div class="error" *ngIf="serverForm.get('emails')?.touched && serverForm.get('emails')?.invalid">
+        At least one email is required.
+      </div>
+
+
+
+      <div class="button-container">
+        <button class="save-btn" type="submit" >Save</button>
+        <button class="close-btn" type="button" (click)="closeForm()">Cancel</button>
+      </div>
     </form>
   </div>
 </div>
