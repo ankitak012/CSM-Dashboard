@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ServerService } from '../../api/server.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router'; // Ensure Router is imported
+import { MatIconModule } from '@angular/material/icon';
 
 
 
@@ -9,7 +10,7 @@ import { RouterModule, Router } from '@angular/router'; // Ensure Router is impo
 @Component({
   selector: 'app-server',
   standalone: true,
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule,RouterModule, MatIconModule],
   templateUrl: './server.component.html',
   styleUrl: './server.component.css'
 })
@@ -37,14 +38,6 @@ export class ServerComponent implements OnInit{
     );
   }
 
-  // calculateDaysSince(createdOn: string): number {
-  //   const createdDate = new Date(createdOn);
-  //   const today = new Date();
-  //   const timeDiff = Math.abs(today.getTime() - createdDate.getTime());
-  //   return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-  // }
-
-  
 
   onServerClick(serverId: number): void {
     console.log('Server clicked with ID:', serverId);
@@ -54,6 +47,34 @@ export class ServerComponent implements OnInit{
       error => console.error('Navigation error:', error)
     );
   } 
+
+  openMenuId: number | null = null;
+
+toggleMenu(serverId: number, event: MouseEvent): void {
+  event.stopPropagation(); // Prevents card click
+  this.openMenuId = this.openMenuId === serverId ? null : serverId;
+}
+
+modifyServer(serverId: number, event: MouseEvent): void {
+  event.stopPropagation(); // Prevent triggering onServerClick
+  console.log('Modify server', serverId);
+  // Add your logic here
+}
+
+deleteServer(serverId: number, event: MouseEvent): void {
+  event.stopPropagation(); // Prevent triggering onServerClick
+  if (confirm('Are you sure you want to delete this server?')) {
+    this.serverService.deleteServer(serverId).subscribe({
+      next: () => {
+        console.log('Server deleted successfully');
+        this.servers = this.servers.filter(server => server.id !== serverId); // Remove from UI
+      },
+      error: (error) => {
+        console.error('Error deleting server:', error);
+      }
+    });
+  }
+}
 
 
 }

@@ -1,11 +1,24 @@
 
 <div class="server-container">
   <div *ngFor="let server of servers" class="server-card" (click)="onServerClick(server.id)" style="cursor: pointer;" >
+    <p class="delete-server" (click)="toggleMenu(server.id, $event)">&#8942;</p>
+
+    <!-- Dropdown menu -->
+    <div *ngIf="openMenuId === server.id" class="menu">
+      <button class="action-button" (click)="modifyServer(server.id, $event)">
+        <mat-icon class="icon modify-icon">edit</mat-icon> Modify
+      </button>
+
+      <button class="action-button" (click)="deleteServer(server.id, $event)">
+        <mat-icon class="icon delete-icon">delete</mat-icon> Delete
+      </button>
+    </div>
+
     <h3>{{ server.server_name }}</h3>
     <p>Uptime: {{ server.created_on }} days</p>
     
     <div class="server-chart">
-      Hello
+      Hello Server
     </div>
   </div>
 </div>
