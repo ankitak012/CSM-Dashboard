@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
@@ -19,6 +19,7 @@ export interface ServiceResponse {
 export class ServicesService {
   // Using the exact URL pattern requested: http://127.0.0.1:9000/api/service/
   private apiUrl = 'http://127.0.0.1:9000/api/service/';
+  private filterUrl = 'http://localhost:8000/api'
 
   constructor(private http: HttpClient) {}
 
@@ -63,5 +64,21 @@ export class ServicesService {
     
     console.error('Service Error:', errorMessage);
     return throwError(() => new Error(errorMessage));
+  }
+
+  getFilteredServices(startDate?: string, endDate?: string, selectedTimeFilter?: string) {
+    let params = new HttpParams();
+
+    if (startDate) {
+      params = params.set('startDate', startDate);
+    }
+    if (endDate) {
+      params = params.set('endDate', endDate);
+    }
+    if (selectedTimeFilter) {
+      params = params.set('selectedTimeFilter', selectedTimeFilter);
+    }
+
+    return this.http.get<any[]>(`${this.filterUrl}/services/`, { params });
   }
 }

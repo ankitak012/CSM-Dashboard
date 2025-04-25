@@ -7,13 +7,57 @@ from .serializers import ServiceSerializer
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+# service/views.py
+from django.http import JsonResponse
+from django.utils.dateparse import parse_datetime
+from datetime import datetime, timedelta
+from .models import Service  # adjust if needed
+
+def get_filtered_services(request):
+    start_date_str = request.GET.get('startDate')
+    end_date_str = request.GET.get('endDate')
+    time_filter = request.GET.get('selectedTimeFilter', '').lower()
+
+    queryset = Service.objects.filter(server__id=server_id).order_by('-created_on')[:100]
+    now = datetime.now()
+
+    # Parse date strings
+    start_date = parse_datetime(start_date_str) if start_date_str else None
+    end_date = parse_datetime(end_date_str) if end_date_str else None
+
+    # Extend end_date to include full day
+    if end_date:
+        end_date = end_date.replace(hour=23, minute=59, second=59, microsecond=999999)
+
+    if start_date and end_date:
+        queryset = queryset.filter(date__range=(start_date, end_date))
+    elif time_filter:
+        if time_filter == 'minute':
+            threshold = now - timedelta(minutes=1)
+        elif time_filter == 'hour':
+            threshold = now - timedelta(hours=1)
+        elif time_filter == 'day':
+            threshold = now - timedelta(days=1)
+        elif time_filter == 'month':
+            threshold = now - timedelta(days=30)
+        elif time_filter == 'year':
+            threshold = now - timedelta(days=365)
+        else:
+            threshold = None
+
+        if threshold:
+            queryset = queryset.filter(date__range=(threshold, now))
+
+    # Prepare response data
+    data = list(queryset.values())
+    return JsonResponse(data, safe=False)
 
 
 class ServiceView(APIView):
     
     def get(self, request, server_id=None):
         if server_id:
-            services = Service.objects.filter(server__id=server_id).order_by('-created_on')
+            services = Service.objects.filter(server__id=server_id).order_by('-created_on')[:100]
                                     
             # Group services by their status
             # grouped_data = defaultdict(list)
@@ -111,6 +155,9 @@ class ServiceView(APIView):
         service = get_object_or_404(Service, pk=pk)
         service.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+
     
     
 @csrf_exempt

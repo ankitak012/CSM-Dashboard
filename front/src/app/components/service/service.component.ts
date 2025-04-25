@@ -25,6 +25,7 @@ export class ServiceComponent implements OnInit {
   serverDetails: any = null;
   displayedIndexes: number[] = [];  // To control the delay effect
   selectedService: any = null;
+  filterServices: any = [];
 
   startDate: string = '';
   endDate: string = '';
@@ -175,6 +176,16 @@ export class ServiceComponent implements OnInit {
     this.services = this.filteredServiceData;
     console.log("Filtered services:", this.services);
   }
+  
+  // applyTimeFilter(): void {
+  //   this.servicesService.getFilteredServices(this.startDate, this.endDate, this.selectedTimeFilter)
+  //     .subscribe((data) => {
+  //       this.filterServices = data;
+  //       console.log("data: ",data)
+  //       console.log("Filtered services from backend:", this.services);
+  //     });
+  // }
+  
   
 
   loadServerDetails(serverId: number): void {
