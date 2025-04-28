@@ -47,7 +47,7 @@ export class ServiceDetailComponent {
 
   loadServices(serverId: number): void {
     console.log('Loading services for server ID:', serverId);
-    this.servicesService.getServicesByServerId(serverId).subscribe({
+    this.servicesService.getServices(serverId).subscribe({
       next: (data: ServiceResponse) => {
         console.log('Services data received:', data);
         this.services = data;

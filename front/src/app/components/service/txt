@@ -1,4 +1,3 @@
-<!-- Back to Servers Button -->
 <button class="btn btn-back" (click)="goBack()">
   <i class="fas fa-arrow-left"></i>
   Back to Servers
@@ -24,7 +23,6 @@
   </div>
 </div>
 
-<!-- Time Filter and Date Selection Section -->
 <div class="server-actions-container">
   <div class="filter-container">
     <label for="timeFilter">Filter by Time: </label>
@@ -41,22 +39,22 @@
     <div class="date-container">
       <label for="startTime">Select start date: </label>
       <div class="input-with-icon">
-        <input id="startTime" type="date" [(ngModel)]="startDate" />
+        <input id="startTime" type="date" [(ngModel)]="startDate"  #startInput>
       </div>
     </div>
 
     <div class="date-container">
       <label for="endTime">Select end date: </label>
       <div class="input-with-icon">
-        <input id="endTime" type="date" [(ngModel)]="endDate"  />
+        <input id="endTime" type="date" [(ngModel)]="endDate"  #endInput>
       </div>
     </div>
 
-    <button class="filter-btn" (click)="onDateRangeChange()">Filter</button>
+    <button class="filter-btn" (click)="applyTimeFilter()">Filter</button>
   </div>
 </div>
 
-<!-- Service List and Status History Table -->
+
 <div class="server-container">
   <div class="service-table">
     <div class="table-header">
@@ -65,7 +63,6 @@
       <div class="header-cell">Actions</div>
     </div>
     
-    <!-- Loop through service names and display status history -->
     <div class="table-row" *ngFor="let serviceName of getServiceNames()">
       <div class="table-cell service-name">
         <h4>{{ serviceName }}</h4>
@@ -89,4 +86,3 @@
     </div>
   </div>
 </div>
-
