@@ -4,6 +4,9 @@ from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from .models import Server
 from .serializers import ServerSerializer
+from logger import logger
+from django.core.exceptions import ValidationError
+
 
 class ServerView(APIView):
     def get(self, request):
@@ -12,25 +15,29 @@ class ServerView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        print("Received data from frontend:", request.data)  # Debug print
+        logger.debug(f"Received data from frontend:{request.data}") 
+        # Debug print
         
         data = request.data.copy()
         # Extract the email string and convert it into list
         email_string = data.get('emails', '')
-        print("email_string: ",email_string)
+        logger.debug(f"email_string: {email_string}")
         
         email_list = [email.strip() for email in email_string.split(';') if email.strip()]
-        print("Parsed email list:", email_list)
+        logger.debug(f"Parsed email list: {email_list}" )
         
         data['emails']= email_list
-        print("Updated data['emails']:", data['emails'])
+        logger.debug(f"Updated data['emails']: {data['emails']}" )
         
         serializer = ServerSerializer(data=data)
         try: 
             if serializer.is_valid():
                 instance = serializer.save()
-                print("Saved instance:", instance)
+                logger.debug(f"Saved instance:{ instance}")
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:   
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
         except ValidationError as e: 
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     

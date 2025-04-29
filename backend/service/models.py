@@ -15,20 +15,19 @@ load_dotenv()  # Load environment variables
 class Service(models.Model):
     
     server = models.ForeignKey(Server, on_delete=models.CASCADE, null=False, blank=False, default=1)
-    cometa_selenoid = models.BooleanField(default=False)
-    cometa_front = models.BooleanField(default=False)
-    cometa_novnc = models.BooleanField(default=False)
-    cometa_scheduler = models.BooleanField(default=False)
-    cometa_socket = models.BooleanField(default=False)
-    cometa_postgres = models.BooleanField(default=False)
-    cometa_behave = models.BooleanField(default=False)
-    cometa_django = models.BooleanField(default=False)
-    cometa_redis = models.BooleanField(default=False)
+    cometa_selenoid = models.JSONField(default=dict)
+    cometa_front = models.JSONField(default=dict)
+    cometa_novnc = models.JSONField(default=dict)
+    cometa_socket = models.JSONField(default=dict)
+    cometa_crontab = models.JSONField(default=dict)
+    cometa_postgres = models.JSONField(default=dict)
+    cometa_behave = models.JSONField(default=dict)
+    cometa_django = models.JSONField(default=dict)
+    cometa_redis = models.JSONField(default=dict)
+    
     created_on = models.DateTimeField(default=timezone.now)
     
-    upCount = models.IntegerField(default=0)
-    downCount = models.IntegerField(default=0)
-    error = models.JSONField(blank=True, null=True)
+    
 
     def __str__(self):
         return f"Service ID: {self.id} - Server ID: {self.server.id if self.server else 'No Server'}"
@@ -97,43 +96,43 @@ class Service(models.Model):
 
     
     def save(self, *args, **kwargs):
-        """Custom save method to trigger email on False fields."""
-        boolean_fields = [
-            'cometa_selenoid', 'cometa_front', 'cometa_novnc', 
-            'cometa_scheduler', 'cometa_socket', 'cometa_postgres', 
-            'cometa_behave', 'cometa_django', 'cometa_redis'
-        ]
+        # """Custom save method to trigger email on False fields."""
+        # boolean_fields = [
+        #     'cometa_selenoid', 'cometa_front', 'cometa_novnc', 
+        #     'cometa_scheduler', 'cometa_socket', 'cometa_postgres', 
+        #     'cometa_behave', 'cometa_django', 'cometa_redis'
+        # ]
 
-        error_messages = {
-            "cometa_selenoid": "Selenium Grid service is not responding.",
-            "cometa_front": "Frontend service is down.",
-            "cometa_novnc": "NoVNC remote connection failed.",
-            "cometa_scheduler": "Task scheduler encountered a failure.",
-            "cometa_socket": "WebSocket connection issue detected.",
-            "cometa_postgres": "Database is unavailable.",
-            "cometa_behave": "Test automation is not functioning properly.",
-            "cometa_django": "Backend service is not running.",
-            "cometa_redis": "Redis cache service is down.",
-        }
+        # error_messages = {
+        #     "cometa_selenoid": "Selenium Grid service is not responding.",
+        #     "cometa_front": "Frontend service is down.",
+        #     "cometa_novnc": "NoVNC remote connection failed.",
+        #     "cometa_scheduler": "Task scheduler encountered a failure.",
+        #     "cometa_socket": "WebSocket connection issue detected.",
+        #     "cometa_postgres": "Database is unavailable.",
+        #     "cometa_behave": "Test automation is not functioning properly.",
+        #     "cometa_django": "Backend service is not running.",
+        #     "cometa_redis": "Redis cache service is down.",
+        # }
         
-        # Collect all false fields and their corresponding errors
-        false_field_errors = {field: error_messages[field] for field in boolean_fields if not getattr(self, field)}
+        # # Collect all false fields and their corresponding errors
+        # false_field_errors = {field: error_messages[field] for field in boolean_fields if not getattr(self, field)}
 
         
-        if false_field_errors:
-            # Send email with all false fields and their reasons
-            self.send_error_email(false_field_errors)
+        # if false_field_errors:
+        #     # Send email with all false fields and their reasons
+        #     self.send_error_email(false_field_errors)
 
-            # Store errors in the model instead of blocking save
-            self.error = false_field_errors
+        #     # Store errors in the model instead of blocking save
+        #     self.error = false_field_errors
            
-           # Prevent saving to the database
-            #raise ValidationError(f"❌ Error: Some services are down. Data not saved.")
+        #    # Prevent saving to the database
+        #     #raise ValidationError(f"❌ Error: Some services are down. Data not saved.")
 
 
-        # Count True and False fields
-        self.upCount = sum(getattr(self, field) for field in boolean_fields)
-        self.downCount = len(false_field_errors)
+        # # Count True and False fields
+        # self.upCount = sum(getattr(self, field) for field in boolean_fields)
+        # self.downCount = len(false_field_errors)
         
         
         super(Service, self).save(*args, **kwargs)

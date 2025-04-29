@@ -9,8 +9,10 @@ class ServiceSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Service
-        fields = ['id', 'server', 'server_name', 'cometa_selenoid','cometa_front','cometa_novnc','cometa_scheduler','cometa_socket','cometa_redis','cometa_django',
-                  'cometa_behave','cometa_postgres','created_on','error', 'upCount', 'downCount']
+        fields = ['id', 'server', 'server_name', 'cometa_selenoid',
+                  'cometa_front','cometa_novnc','cometa_crontab',
+                  'cometa_socket','cometa_redis','cometa_django',
+                  'cometa_behave','cometa_postgres','created_on']
         
    
 
